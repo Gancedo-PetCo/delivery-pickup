@@ -31,7 +31,7 @@ test('insert item availability data', () => {
     })
     .then((stores) => {
       storeIds = stores.map((store) => {
-        return store._id;
+        return store._id.toString();
       })
       console.log('Store ids I found', storeIds)
       return ItemAvailability.find({})
@@ -40,6 +40,8 @@ test('insert item availability data', () => {
           expect(record.itemAvailability).toHaveLength(5);
           for (let i = 0; i < 5; i++) {
             expect(typeof record.itemAvailability[i].availability).toBe('boolean');
+            expect(storeIds).toContain(record.itemAvailability[i].storeId.toString());
+
           }
         }
         let dbItemIds = records.map((record) => {
