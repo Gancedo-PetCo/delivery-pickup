@@ -2,7 +2,7 @@ const mongoose = require('mongoose');
 mongoose.Promise = global.Promise;
 
 const storeSchema = new mongoose.Schema({
-  storeId: Number,
+  _id: mongoose.Schema.Types.ObjectId,
   storeName: String,
   storeAddress: String,
   storePhoneNumber: String
@@ -10,7 +10,7 @@ const storeSchema = new mongoose.Schema({
 
 const itemAvailabilitySchema = new mongoose.Schema({
   itemId: String,
-  itemAvailability: [{storeId: Number, availability: Boolean}]
+  itemAvailability: [{storeId: {type: mongoose.Schema.Types.ObjectId, ref: 'Store'}, availability: Boolean}]
 });
 
 const ItemAvailability = mongoose.model('ItemAvailability', itemAvailabilitySchema);

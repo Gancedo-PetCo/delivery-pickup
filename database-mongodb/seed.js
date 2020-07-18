@@ -8,8 +8,7 @@ let seedDB = () => {
     return insertRecords()
   })
   .then(() => {
-    console.log('Successfully inserted images');
-    mongoose.connection.close();
+    return mongoose.connection.close();
   })
   .catch(
     (error) => console.log(error)

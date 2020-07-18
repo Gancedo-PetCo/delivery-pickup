@@ -17,35 +17,38 @@ afterAll(() => {
 })
 
 test('insert item availability data', () => {
+  let storeIds;
   return insertRecords()
     .then(() => {
       return Store.find({})
         .then(records => {
           expect(records).toHaveLength(5);
-          expect(records[0].storeId).toBe(1);
           expect(records[0].storeName).toBe('N Walnut Creek');
           expect(records[0].storeAddress).toBe('2820 Ygnacio Valley Rd Walnut Creek, CA 94598')
           expect(records[0].storePhoneNumber).toBe('925-433-4194');
+          return records;
         })
     })
-    .then(() => {
+    .then((stores) => {
+      storeIds = stores.map((store) => {
+        return store._id;
+      })
+      console.log('Store ids I found', storeIds)
       return ItemAvailability.find({})
       .then(records => {
+        for (let record of records) {
+          expect(record.itemAvailability).toHaveLength(5);
+          for (let i = 0; i < 5; i++) {
+            expect(typeof record.itemAvailability[i].availability).toBe('boolean');
+          }
+        }
         let dbItemIds = records.map((record) => {
           return record.itemId;
         })
         expect(dbItemIds).toHaveLength(100);
-        expect(records[0].itemAvailability).toHaveLength(5);
-        expect(records[0].itemAvailability[0].storeId).toBe(1);
-        expect(typeof records[0].itemAvailability[0].availability).toBe('boolean');
-        expect(records[0].itemAvailability[1].storeId).toBe(2);
-        expect(typeof records[0].itemAvailability[1].availability).toBe('boolean');
-        expect(records[0].itemAvailability[2].storeId).toBe(3);
-        expect(typeof records[0].itemAvailability[2].availability).toBe('boolean');
-        expect(records[0].itemAvailability[3].storeId).toBe(4);
-        expect(typeof records[0].itemAvailability[3].availability).toBe('boolean');
-        expect(records[0].itemAvailability[4].storeId).toBe(5);
-        expect(typeof records[0].itemAvailability[4].availability).toBe('boolean');
+        for (let i = 100; i < 200; i++) {
+          expect(dbItemIds).toContain(i.toString());
+        }
       })
     })
 });
