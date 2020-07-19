@@ -33,7 +33,6 @@ test('insert item availability data', () => {
       storeIds = stores.map((store) => {
         return store._id.toString();
       })
-      console.log('Store ids I found', storeIds)
       return ItemAvailability.find({})
       .then(records => {
         for (let record of records) {

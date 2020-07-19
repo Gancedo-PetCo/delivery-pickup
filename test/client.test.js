@@ -14,7 +14,7 @@ describe('deliverPickup', () => {
 
   it('should display Add to Cart button and Available at: if item is available', () => {
     const wrapper = shallow(<DeliverPickup availability={available} price={price} currency={currency}/>);
-    console.log(wrapper.html());
+    // console.log(wrapper.html());
     expect(wrapper.find('.deliverPickupButton').at(1).text()).toEqual('Add to Cart');
     expect(wrapper.find('.itemAvailability').text()).toEqual('Available at:');
   });
