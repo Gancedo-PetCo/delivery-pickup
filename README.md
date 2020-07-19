@@ -1,7 +1,30 @@
 # deliver-pickup
 
+## Related Projects
+
+- https://github.com/PetToyCo/mainTitle_price
+
+## Table of Contents
+  1. Usage
+  2. Endpoints
+
+## Usage
+
+- run `npm install` inside the photo-gallery directory to install dependencies
 - run `npm run seed` (to seed the database)
 - run `npm test` (to test seeding script, api endpoints and react components)
+- start your application with two commands, `npm run client` and `npm start`, in two separate terminal tabs
+
+If you need to use this service as standalone:
+
+- follow all steps above
+- visit http://127.0.0.1:3006/ in a browser
+- add a query string parameter `itemID` to your url. Pick itemID within the range 100 - 199.
+Example: `http://127.0.0.1:3006/?itemID=106`
+
+## Endpoints:
+
+This service has two endpoints. Endpoint retrieves array of stores and item availability. To retrieve data for a specific item, navigate to:
 
 Go to http://localhost:3006/availableAt/:itemId/
 
