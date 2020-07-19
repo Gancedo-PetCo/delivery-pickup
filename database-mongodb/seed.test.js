@@ -40,8 +40,7 @@ test('insert item availability data', () => {
           expect(record.itemAvailability).toHaveLength(5);
           for (let i = 0; i < 5; i++) {
             expect(typeof record.itemAvailability[i].availability).toBe('boolean');
-            expect(storeIds).toContain(record.itemAvailability[i].storeId.toString());
-
+            expect(storeIds).toContain(record.itemAvailability[i].storeId.toString())
           }
         }
         let dbItemIds = records.map((record) => {
