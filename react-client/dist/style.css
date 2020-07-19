@@ -1,0 +1,139 @@
+.deliveryPickupContainers {
+  width: 320px;
+}
+
+.deliverPickup {
+  border: 1px solid #d4dadc;
+  padding-left: 20px;
+  padding-right: 10px;
+  padding-top: 5px;
+  padding-bottom: 10px;
+  margin-bottom: 10px;
+}
+
+.deliverPickupHeader {
+  font-family: Arial, sans-serif;
+  font-size: 20px;
+  font-weight: 700;
+  line-height:20px;
+  color: rgb(51, 51, 51);
+  margin-bottom: 10px;
+}
+
+.deliverPickupItemPrice {
+  font-family: Arial, sans-serif;
+  color: rgb(51, 51, 51);
+  font-weight: 700;
+  margin-bottom: 3px;
+}
+
+.cubsidePickup {
+  font-weight: 400;
+  font-family: Arial, sans-serif;
+  font-size: 12.1875px;
+  color: rgb(102, 102, 102);
+  margin-bottom: 10px;
+}
+
+.deliveryTruck {
+  background-image: url("truck.webp");
+  width: 22px;
+  height: 15px;
+  display: inline-block;
+  margin-bottom:-3px;
+  background-repeat: no-repeat;
+
+}
+
+.deliverText {
+  color: rgb(51, 51, 51);
+  font-family: Arial, sans-serif;
+  font-size: 11px;
+  margin-bottom: 10px;
+  margin-top:15px;
+}
+
+.deliveryDate {
+  color: rgb(0, 117, 0);
+  font-weight: 700;
+}
+
+.deliverPickupButton {
+  border-radius: 5px;
+  background-color: #005891;
+  border: 0;
+  font-size: 15px;
+  color: #fff;
+  height: 50px;
+  padding: 0;
+  cursor: pointer;
+  text-align: center;
+  width: 100%;
+  font-weight: bold;
+  font-family: Arial,sans-serif;
+}
+
+.deliverPickupButton:disabled {
+  background-color: #E9ECED;
+  border: solid 1px #A9B5BA;
+  color: #656565;
+  cursor: initial;
+}
+
+.addToWishlistDiv {
+  text-align: center;
+  padding: 10px;
+  margin-bottom: 20px;
+}
+.addToWishlist {
+  color: #005891;
+  text-decoration: none;
+  cursor: pointer;
+  font-size: 15px;
+  font-family: Arial,sans-serif;
+  font-weight: bold;
+}
+
+.itemAvailability {
+  font-family:Arial, sans-serif;
+  font-size:13px;
+  font-weight:700;
+  line-height:20px
+}
+
+.itemAvailabilityGreen {
+  color: #007500;
+}
+
+.itemAvailabilityRed {
+  color: #E02924;
+}
+
+.pickupStoreName {
+  font-weight: 700;
+  font-family:Arial, sans-serif;
+  font-size: 13px;
+  color:rgb(0, 0, 0);
+  line-height: 20px;
+}
+
+.localStoreAvailability {
+  background-color: rgb(244, 246, 246);
+  color: rgb(51, 51, 51);
+  border: 1px solid #d4dadc;
+  line-height: 20px;
+  padding-bottom:5px;
+  padding-left: 5px;
+  margin-bottom: 10px;
+  padding-right: 5px;
+}
+
+.changeStore {
+  color: rgb(0, 88, 145);
+  cursor: pointer;
+  font-family: Arial, sans-serif;
+  font-size: 13px;
+  font-weight: 700;
+  text-decoration-line: underline;
+  float: right;
+}
