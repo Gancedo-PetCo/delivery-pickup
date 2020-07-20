@@ -9,6 +9,7 @@
   2. Endpoints
 
 ## Usage
+This service is meant to be used with a proxy server. If that is your intended use:
 
 - run `npm install` inside the photo-gallery directory to install dependencies
 - run `npm run seed` (to seed the database)
@@ -24,7 +25,7 @@ Example: `http://127.0.0.1:3006/?itemID=106`
 
 ## Endpoints:
 
-This service has two endpoints. Endpoint retrieves array of stores and item availability. To retrieve data for a specific item, navigate to:
+This service has one endpoint. Endpoint retrieves array of stores and item availability. To retrieve data for a specific item, navigate to:
 
 Go to http://localhost:3006/availableAt/:itemId/
 

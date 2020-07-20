@@ -42,4 +42,11 @@ test('successfully retrieves availability data for item 106', () => {
         })
   })
 
+  test('returns 404 status code if item not found', () => {
+  return request(app).get('/availableAt/200')
+    .then((response) => {
+      expect(response.status).toBe(404);
+    })
+});
+
 });

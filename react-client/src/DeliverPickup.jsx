@@ -1,5 +1,4 @@
 import React from 'react';
-import ReactDOM from 'react-dom';
 
 const DeliverPickup = (props) => (
   <div className="deliveryPickupContainers">
