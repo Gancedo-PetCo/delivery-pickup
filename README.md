@@ -10,6 +10,10 @@
   3. Proxy Integration
 
 ## Usage
+
+Please Note: This service is currently in Production mode.
+if you need to return it to development mode, go to config.js file, comment aws configuration and uncomment the local one.
+
 This service is meant to be used with a proxy server. If that is your intended use:
 
 - run `npm install` inside the photo-gallery directory to install dependencies

@@ -1,4 +1,4 @@
-// aws
+// aws config
 module.exports = {
   mongoUri: 'mongodb://172.31.46.64:27017/itemAvailability',
   itemPrice: 'http://52.14.208.55:3005/itemPrice/',
@@ -6,7 +6,7 @@ module.exports = {
 
 };
 
-//local
+//local config
 // module.exports = {
 //   mongoUri: 'mongodb://localhost/itemAvailability',
 //   itemPrice: 'http://127.0.0.1:3005/itemPrice/',
