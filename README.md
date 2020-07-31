@@ -47,7 +47,7 @@ JSON response format:
 
 Production mode:
 
-To use this service with a proxy server, please add `<div id="itemAvailability"></div>` in index.html of your proxy server, and please add <script src="http://18.224.229.28/:3006/bundle.js"></script> near the bottom of the same file. Also you will need to place `<link rel="stylesheet" href="http://18.224.229.28/:3006/style.css"></link>` file in the head of your html file.
+To use this service with a proxy server, please add `<div id="itemAvailability"></div>` in index.html of your proxy server, and please add <script src="http://18.224.229.28:3006/bundle.js"></script> near the bottom of the same file. Also you will need to place `<link rel="stylesheet" href="http://18.224.229.28:3006/style.css"></link>` file in the head of your html file.
 
 Development mode:
 
