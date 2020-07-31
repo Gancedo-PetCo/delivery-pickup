@@ -2,6 +2,7 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import $ from 'jquery';
 import DeliverPickup from './DeliverPickup.jsx'
+import config from '../../config.js'
 
 class App extends React.Component {
   constructor(props) {
@@ -16,8 +17,7 @@ class App extends React.Component {
   componentDidMount () {
     console.log('Item id', this.props.itemId)
     $.ajax ({
-      url: "http://127.0.0.1:3005/itemPrice/" + this.props.itemId,
-      // url: "http://ec2-18-188-72-255.us-east-2.compute.amazonaws.com/itemImages/" + this.props.itemId,
+      url: config.itemPrice + this.props.itemId,
       type: "get",
       success: (data) => {
         console.log('Data returned from the title amd price service', data);
@@ -31,8 +31,7 @@ class App extends React.Component {
       }
     })
     $.ajax ({
-      url: "http://127.0.0.1:3006/availableAt/" + this.props.itemId,
-      // url: "http://ec2-18-188-72-255.us-east-2.compute.amazonaws.com/itemImages/" + this.props.itemId,
+      url: config.availableAt + this.props.itemId,
       type: "get",
       success: (data) => {
         console.log('Data returned from the server', data.itemAvailability[0].storeName);
