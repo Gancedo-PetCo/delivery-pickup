@@ -12,6 +12,7 @@ app.use(bodyParser.urlencoded({extended: true}));
 
 app.get('*.js', (req, res, next) => {
   req.url = req.url + '.gz';
+  res.set('Content-Type', 'application/javascript');
   res.set('Content-Encoding', 'gzip');
   next();
 });
