@@ -1,6 +1,5 @@
 const express = require('express');
-const { ItemAvailability, CrudOps } = require('../database-mongodb/itemAvailability.js');
-const connect = require('../database-mongodb/connect.js');
+const CrudOps = require('../database-mongodb/itemAvailability.js');
 const cors = require('cors');
 const app = express();
 
