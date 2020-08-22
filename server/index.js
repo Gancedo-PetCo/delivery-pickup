@@ -1,5 +1,5 @@
 const express = require('express');
-const CrudOps = require('../database-mongodb/itemAvailability.js');
+const { CrudOps } = require('../database-mongodb/itemAvailability.js');
 const cors = require('cors');
 const app = express();
 
@@ -74,12 +74,26 @@ app.get('/availableAt/:itemId/', (req, res) => {
 
 //Update
 app.put('/availableAt/:itemId/', (req, res) => {
-
+  console.log('PUT received! ID: ', req.params.itemId);
+  CrudOps.updateItemAvailability(req.params.itemId, { ...req.body.data }, (err, oldData) => {
+    if (err) {
+      res.sendStatus(400);
+    } else {
+      res.status(200).send(oldData);
+    }
+  });
 });
 
 //Delete
 app.delete('/availableAt/:itemId/', (req, res) => {
-
+  console.log('DELETE received! ID: ', req.params.itemId);
+  CrudOps.deleteItemAvailability(req.params.itemId, (err, doc) => {
+    if (err) {
+      res.sendStatus(400);
+    } else {
+      res.status(200).send(doc);
+    }
+  })
 });
 
 

@@ -56,7 +56,7 @@ const readItemAvailability = (itemId, CB) => {
 };
 
 const updateItemAvailability = (itemID, data, CB) => {
-  ItemAvailability.updateOne({ itemId }, { ...data }, (err, result) => {
+  ItemAvailability.findOneAndUpdate({ itemId }, { ...data }, (err, result) => {
     if (err) {
       CB(err);
     } else {
@@ -66,9 +66,11 @@ const updateItemAvailability = (itemID, data, CB) => {
 };
 
 const deleteItemAvailability = (itemID, CB) => {
-  ItemAvailability.deleteOne({ itemID }, (err) => {
+  ItemAvailability.deleteOne({ itemID }, (err, doc) => {
     if (err) {
       CB(err);
+    } else {
+      CB(null, doc);
     }
   });
 
