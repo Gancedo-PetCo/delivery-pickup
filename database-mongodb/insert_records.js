@@ -1,4 +1,4 @@
-const {Store, ItemAvailability} = require('./itemAvailability.js');
+const { Store, ItemAvailability } = require('./itemAvailability.js');
 
 let storeData = [
   {
@@ -26,40 +26,40 @@ let storeData = [
     storeAddress: '2005 Crow Canyon PI San Ramon, CA 94583-1361',
     storePhoneNumber: '925-275-2111'
   }
-]
+];
 
 let insertStoreData = () => {
-  return Store.insertMany(storeData)
-}
+  return Store.insertMany(storeData);
+};
 
 const generateRecords = () => {
   return insertStoreData()
     .then(() => {
-      return Store.find({}).select('_id')
+      return Store.find({}).select('_id');
     })
     .then((data) => {
-      console.log('StoreData', data)
+      console.log('StoreData', data);
       let itemData = [];
       for (let i = 100; i < 200; i++) {
         let itemAvailability = data.map((value) => {
-          return {storeId: value._id, availability: Math.random() < 0.7}
-        })
-        itemData.push({itemId: i.toString(), itemAvailability});
+          return { storeId: value._id, availability: Math.random() < 0.7 };
+        });
+        itemData.push({ itemId: i.toString(), itemAvailability });
       }
       return itemData;
-    })
-}
+    });
+};
 
 let insertRecords = () => {
   return generateRecords()
     .then((data) => {
-      console.log('Data', data[0])
+      console.log('Data', data[0]);
       return ItemAvailability.insertMany(data)
         .then(() => {
-          console.log('Successfully inserted records')
-        })
-    })
-}
+          console.log('Successfully inserted records');
+        });
+    });
+};
 
 
 module.exports = insertRecords;
