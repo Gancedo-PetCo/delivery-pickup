@@ -1,14 +1,12 @@
 const express = require('express');
-const bodyParser = require('body-parser');
-const {ItemAvailability, Store} = require('../database-mongodb/itemAvailability.js')
-const mongoose = require('mongoose');
-const connect = require('../database-mongodb/connect.js')
+const { ItemAvailability, Store } = require('../database-mongodb/itemAvailability.js');
+const connect = require('../database-mongodb/connect.js');
 const cors = require('cors');
 const app = express();
-app.use(cors());
 
-app.use(bodyParser.json());
-app.use(bodyParser.urlencoded({extended: true}));
+app.use(cors());
+app.use(express.json());
+app.use(express.urlencoded({ extended: true }));
 
 app.get('*.js', (req, res, next) => {
   req.url = req.url + '.gz';
@@ -19,7 +17,15 @@ app.get('*.js', (req, res, next) => {
 
 app.use(express.static(__dirname + '/../react-client/dist'));
 
-app.get('/availableAt/:itemId/', function(req, res) {
+
+
+//Create
+app.post('/availableAt/:itemId/', (req, res) => {
+
+});
+
+//Read
+app.get('/availableAt/:itemId/', (req, res) => {
   console.log('Trying to fetch data', req.params.itemId);
   return ItemAvailability.findOne({ itemId: req.params.itemId }, '-_id -__v')
     .populate({
@@ -36,10 +42,10 @@ app.get('/availableAt/:itemId/', function(req, res) {
             storeAddress: store.storeId.storeAddress,
             storePhoneNumber: store.storeId.storePhoneNumber,
             availability: store.availability
-          }
-        })
+          };
+        });
 
-        res.status(200).send({itemAvailability: storeData});
+        res.status(200).send({ itemAvailability: storeData });
       } else {
         res.sendStatus(404);
       }
@@ -47,7 +53,20 @@ app.get('/availableAt/:itemId/', function(req, res) {
     .catch((err) => {
       res.status(500).send(err);
       console.log(err);
-    })
-})
+    });
+});
 
-module.exports = app
+//Update
+app.put('/availableAt/:itemId/', (req, res) => {
+
+});
+
+//Delete
+app.delete('/availableAt/:itemId/', (req, res) => {
+
+});
+
+
+
+
+module.exports = app;

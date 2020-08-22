@@ -8,7 +8,7 @@ app.use(morgan('dev'));
 connect()
   .then(() => {
     console.log('Connected to database');
-  })
+  });
 
 app.listen(PORT, () => {
   console.log(`listening on port ${PORT}`);

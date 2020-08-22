@@ -1,5 +1,5 @@
 const mongoose = require('mongoose');
-const config = require('../config.js')
+const config = require('../config.js');
 
 function connect() {
   const mongoUri = config.mongoUri;
