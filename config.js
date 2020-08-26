@@ -8,7 +8,9 @@
 
 // local config
 module.exports = {
-  mongoUri: 'mongodb://localhost/itemAvailability',
+  mongoUri: 'mongodb://localhost:27017/itemAvailability',
+  serverUri: 'mongodb://localhost:27017/serverTest',
+  seedUri: 'mongodb://localhost:27017/seedTest',
   itemPrice: 'http://127.0.0.1:3005/itemPrice/',
   availableAt: 'http://127.0.0.1:3006/availableAt/'
 };

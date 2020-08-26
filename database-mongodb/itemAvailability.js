@@ -17,18 +17,13 @@ const ItemAvailability = mongoose.model('ItemAvailability', itemAvailabilitySche
 const Store = mongoose.model('Store', storeSchema);
 
 
-const createItemAvailability = (data, CB) => {
-  ItemAvailability.create({ ...data }, (err, small) => {
-    if (err) {
-      CB(err, null);
-    } else {
-      CB(null, small);
-    }
-  });
+const createItemAvailability = (data) => {
+  return ItemAvailability.create({ ...data });
 };
 
-const readItemAvailability = (itemId, CB) => {
-  ItemAvailability.findOne({ itemId }, '-_id -__v')
+const readItemAvailability = (itemId) => {
+
+  return ItemAvailability.findOne({ itemId }, '-_id -__v')
     .populate({
       path: 'itemAvailability',
       populate: {
@@ -36,24 +31,21 @@ const readItemAvailability = (itemId, CB) => {
       }
     })
     .then((data) => {
-      if (data) {
-        let storeData = data.itemAvailability.map((store) => {
-          return {
-            storeName: store.storeId.storeName,
-            storeAddress: store.storeId.storeAddress,
-            storePhoneNumber: store.storeId.storePhoneNumber,
-            availability: store.availability
-          };
-        });
-        CB(null, { itemAvailability: storeData });
-      } else {
-        CB(null, {});
-      }
+      let storeData = data.itemAvailability.map((store) => {
+        return {
+          storeName: store.storeId.storeName,
+          storeAddress: store.storeId.storeAddress,
+          storePhoneNumber: store.storeId.storePhoneNumber,
+          availability: store.availability
+        };
+      });
+      return { itemAvailability: storeData };
     })
     .catch((err) => {
-      CB(err);
+      return err;
     });
 };
+
 
 const updateItemAvailability = (itemID, data, CB) => {
   ItemAvailability.findOneAndUpdate({ itemId }, { ...data }, (err, result) => {

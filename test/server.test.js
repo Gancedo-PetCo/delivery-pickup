@@ -5,20 +5,23 @@ const mongoose = require('mongoose');
 const request = require('supertest');
 const app = require('../server/index.js');
 
-beforeAll(async () => {
 
-  await mongoose.connect(config.mongoUri, {
+
+beforeAll(async () => {
+  await mongoose.connect(config.serverUri, {
     useNewUrlParser: true,
     poolSize: 10
+  }).then(() => {
+    ItemAvailability.remove({});
   })
-    .then(() => {
-      ItemAvailability.remove({});
-    })
     .then(() => {
       Store.remove({});
     })
     .then(() => {
       insertRecords();
+    })
+    .then(() => {
+      console.log('seeded!');
     });
 });
 
@@ -26,51 +29,44 @@ afterAll(async () => {
   await mongoose.connection.close();
 });
 
-// test('successfully retrieves availability data for item 106', () => {
-//   return ItemAvailability.findOne({ itemId: '106' })
-//     .populate({
-//       path: 'itemAvailability',
-//       populate: {
-//         path: 'storeId'
-//       }
+
+
+
+// describe('BackEnd Test', () => {
+//   test('successfully runs GET request on item that exists', () => {
+//     let storeId = Store.find({}).select('_id')[0];
+//     let goodData = {
+//       itemId: '201',
+//       itemAvailability: [
+//         {
+//           storeId: storeId,
+//           availability: true
+//         }
+//       ]
+//     }
+//     CrudOps.createItemAvailability(goodData, (err, data) => {
+//       expect(err).toEqual(null);
+//       expect(data).toHaveProperty('itemId');
+//       expect(data).toHaveProperty('itemAvailability');
+//       done();
 //     })
-//     .then((data) => {
-//       return request(app).get('/availableAt/106/')
-//         .then((response) => {
-//           // console.log(response.body);
-//           expect(response.status).toBe(200);
-//           expect(response.body.itemAvailability).toHaveLength(5);
-//           expect(response.body.itemAvailability[0].availability).toBe(data.itemAvailability[0].availability);
-//           expect(response.body.itemAvailability[0].storeName).toBe(data.itemAvailability[0].storeId.storeName);
-//           expect(response.body.itemAvailability[0].storeAddress).toBe(data.itemAvailability[0].storeId.storeAddress);
-//           expect(response.body.itemAvailability[0].storePhoneNumber).toBe(data.itemAvailability[0].storeId.storePhoneNumber);
-//         });
-//     });
+//   });
+
 // });
 
-describe('BackEnd Tests', () => {
-  test('successfully retrieves availability data for item 106', () => {
-    let data = CrudOps.readItemAvailability('106', (err, data) => {
-      if (err) {
-        console.error(err);
-      } else {
-        return data;
-      }
-    });
-    expect(data).toHaveProperty('itemId');
-    expect(data).toHaveProperty('itemAvailability');
-    expect(data.itemAvailabilitylength).toBeGreaterThan(0);
+
+
+describe('Requests Test', () => {
+  test('returns 200 status code if item found', () => {
+    return request(app).get('/availableAt/101')
+      .then((response) => {
+        expect(response.status).toBe(200);
+      });
+  });
+  test('returns 404 status code if item not found', () => {
+    return request(app).get('/availableAt/200')
+      .then((response) => {
+        expect(response.status).toBe(404);
+      });
   });
 });
-
-
-
-
-// describe('Requests Test', () => {
-//   test('returns 404 status code if item not found', () => {
-//     return request(app).get('/availableAt/200')
-//       .then((response) => {
-//         expect(response.status).toBe(404);
-//       });
-//   });
-// });

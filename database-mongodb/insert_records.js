@@ -38,7 +38,7 @@ const generateRecords = () => {
       return Store.find({}).select('_id');
     })
     .then((data) => {
-      console.log('StoreData', data);
+      // console.log('StoreData', data);
       let itemData = [];
       for (let i = 100; i < 200; i++) {
         let itemAvailability = data.map((value) => {
@@ -53,7 +53,7 @@ const generateRecords = () => {
 let insertRecords = () => {
   return generateRecords()
     .then((data) => {
-      console.log('Data', data[0]);
+      // console.log('Data', data);
       return ItemAvailability.insertMany(data)
         .then(() => {
           console.log('Successfully inserted records');
