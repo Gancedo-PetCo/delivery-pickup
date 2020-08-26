@@ -52,3 +52,79 @@ To use this service with a proxy server, please add `<div id="itemAvailability">
 Development mode:
 
 To use this service with a proxy server, please add `<div id="itemAvailability"></div>` in index.html of your proxy server, and please add <script src="http://localhost:3006/bundle.js"></script> near the bottom of the same file. Also you will need to place `<link rel="stylesheet" href="http://localhost:3006/style.css"></link>` file in the head of your html file.
+
+
+##CRUD End Points
+Get `/availableAt/:itemId/`
+String: itemId
+
+
+Response:
+<pre><code>
+{
+  itemId: string,
+  itemAvailability: [
+    
+    {
+      storeId: string,
+      availability: bool
+    },
+    {...}
+      
+  ]
+}
+</code></pre>
+
+
+POST `/availableAt/:itemId/`
+
+
+Parameters:
+<pre><code>
+{
+  itemId: string,
+  itemAvailability: [
+    
+    {
+      storeId: string,
+      availability: bool
+    },
+    {...}
+      
+  ]
+}
+</code></pre>
+
+
+Response:
+same as parameters
+
+
+PUT `/availableAt/:itemId/`
+
+
+Parameters 
+<pre><code>
+{
+  itemAvailability: [
+    
+    {
+      storeId: string,
+      availability: bool
+    },
+    {...}
+      
+  ]
+}
+</code></pre>
+
+
+Response:
+Same as GET
+Unable to alter itemId
+
+DELETE `/availableAt/:itemId/`
+
+
+Response:
+Same as GET, data of deleted item
