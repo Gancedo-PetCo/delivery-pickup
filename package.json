@@ -21,7 +21,8 @@
     "mongoose": "^5.9.18",
     "morgan": "^1.10.0",
     "react": "^16.13.1",
-    "react-dom": "^16.13.1"
+    "react-dom": "^16.13.1",
+    "when": "^3.7.8"
   },
   "devDependencies": {
     "@babel/core": "^7.10.2",

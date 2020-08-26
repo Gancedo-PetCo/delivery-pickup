@@ -9,7 +9,10 @@ const storeSchema = new mongoose.Schema({
 });
 
 const itemAvailabilitySchema = new mongoose.Schema({
-  itemId: String,
+  itemId: {
+    unique: true,
+    type: String
+  },
   itemAvailability: [{ storeId: { type: mongoose.Schema.Types.ObjectId, ref: 'Store' }, availability: Boolean }]
 });
 
@@ -18,7 +21,16 @@ const Store = mongoose.model('Store', storeSchema);
 
 
 const createItemAvailability = (data) => {
-  return ItemAvailability.create({ ...data });
+  return ItemAvailability.create({
+    ...data
+  }).then(null, (err) => {
+    if (err.code === 11000) {
+      console.log('wat');
+      return ItemAvailability.findOne({ ...data }).exec();
+    } else {
+      throw err;
+    }
+  })
 };
 
 const readItemAvailability = (itemId) => {
@@ -31,6 +43,7 @@ const readItemAvailability = (itemId) => {
       }
     })
     .then((data) => {
+      // console.log(data);
       let storeData = data.itemAvailability.map((store) => {
         return {
           storeName: store.storeId.storeName,
@@ -39,7 +52,10 @@ const readItemAvailability = (itemId) => {
           availability: store.availability
         };
       });
-      return { itemAvailability: storeData };
+      return {
+        itemAvailability: storeData,
+        itemId
+      };
     })
     .catch((err) => {
       return err;
@@ -47,24 +63,26 @@ const readItemAvailability = (itemId) => {
 };
 
 
-const updateItemAvailability = (itemID, data, CB) => {
-  ItemAvailability.findOneAndUpdate({ itemId }, { ...data }, (err, result) => {
-    if (err) {
-      CB(err);
-    } else {
-      CB(null, result);
-    }
-  });
+const updateItemAvailability = (itemId, data) => {
+  return ItemAvailability.findOneAndUpdate({ itemId }, { ...data }, { new: true })
+    .then((data) => {
+      return data;
+    })
+    .catch(((err) => {
+      return err;
+    }));
 };
 
-const deleteItemAvailability = (itemID, CB) => {
-  ItemAvailability.deleteOne({ itemID }, (err, doc) => {
-    if (err) {
-      CB(err);
-    } else {
-      CB(null, doc);
-    }
-  });
+const deleteItemAvailability = (itemId) => {
+  return ItemAvailability.deleteOne({ itemId })
+    .then((data) => {
+      // console.log(data);
+      return data;
+    })
+    .catch((err) => {
+      // console.error('err', err);
+      return err;
+    });
 
 };
 

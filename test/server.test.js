@@ -12,13 +12,13 @@ beforeAll(async () => {
     useNewUrlParser: true,
     poolSize: 10
   }).then(() => {
-    ItemAvailability.remove({});
+    return ItemAvailability.remove({});
   })
     .then(() => {
-      Store.remove({});
+      return Store.remove({});
     })
     .then(() => {
-      insertRecords();
+      return insertRecords();
     })
     .then(() => {
       console.log('seeded!');
@@ -32,27 +32,63 @@ afterAll(async () => {
 
 
 
-// describe('BackEnd Test', () => {
-//   test('successfully runs GET request on item that exists', () => {
-//     let storeId = Store.find({}).select('_id')[0];
-//     let goodData = {
-//       itemId: '201',
-//       itemAvailability: [
-//         {
-//           storeId: storeId,
-//           availability: true
-//         }
-//       ]
-//     }
-//     CrudOps.createItemAvailability(goodData, (err, data) => {
-//       expect(err).toEqual(null);
-//       expect(data).toHaveProperty('itemId');
-//       expect(data).toHaveProperty('itemAvailability');
-//       done();
-//     })
-//   });
+describe('BackEnd Test', () => {
 
-// });
+  test('successfully runs GET request on item that exists', () => {
+    const record = '199';
+    CrudOps.readItemAvailability(record)
+      .then((data) => {
+        // console.log(data);
+        expect(data.itemId).toBe('199');
+        expect(data).toHaveProperty('itemAvailability');
+      })
+  });
+
+  test('successfully runs POST request on new item', () => {
+    let storeId = Store.find({}).select('_id')[0];
+    let goodData = {
+      itemId: '202',
+      itemAvailability: [
+        {
+          storeId: storeId,
+          availability: true
+        }
+      ]
+    };
+    CrudOps.createItemAvailability(goodData)
+      .then((data) => {
+        // console.log(data);
+        expect(data).toHaveProperty('itemId');
+        expect(data).toHaveProperty('itemAvailability');
+      });
+  });
+
+  test('successfully runs PUT request on existing item', () => {
+
+    CrudOps.readItemAvailability('101')
+      .then((data) => {
+        data.itemAvailability = [];
+        CrudOps.updateItemAvailability('101', data)
+          .then((data) => {
+            // console.log(data);
+            expect(data.itemAvailability.length).toBe(0);
+          })
+      })
+  });
+  test('successfully runs DELETE request on existing item', () => {
+
+    CrudOps.deleteItemAvailability('102')
+      .then((data) => {
+        console.log(data);
+        CrudOps.readItemAvailability('102')
+          .then((data) => {
+            console.log(data);
+            expect(Object.keys(data).length).toBe(0);
+          })
+      })
+
+  });
+});
 
 
 
@@ -64,8 +100,9 @@ describe('Requests Test', () => {
       });
   });
   test('returns 404 status code if item not found', () => {
-    return request(app).get('/availableAt/200')
+    return request(app).get('/availableAt/203')
       .then((response) => {
+        console.log(response.status);
         expect(response.status).toBe(404);
       });
   });

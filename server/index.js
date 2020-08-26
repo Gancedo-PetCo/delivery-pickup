@@ -19,15 +19,24 @@ app.use(express.static(__dirname + '/../react-client/dist'));
 
 
 //Create
-app.post('/availableAt/:itemId/', (req, res) => {
-  console.log('POST received! ID: ', req.params.itemId);
-  CrudOps.createItemAvailability(req.body.data, (err, data) => {
-    if (err) {
-      res.sendStatus(400);
-    } else {
+app.post('/availableAt', (req, res) => {
+  console.log('POST received!');
+  CrudOps.createItemAvailability(req.body.data)
+    .then((data) => {
       res.status(200).send(data);
-    }
-  });
+    })
+    .catch((err) => {
+
+      res.sendStatus(400);
+    });
+  //   , (err, data) => {
+  //   if (err) {
+  //     res.sendStatus(400);
+  //   } else {
+  //     res.status(200).send(data);
+  //   }
+  // }
+  // );
 });
 
 //Read
@@ -50,25 +59,25 @@ app.get('/availableAt/:itemId/', (req, res) => {
 //Update
 app.put('/availableAt/:itemId/', (req, res) => {
   console.log('PUT received! ID: ', req.params.itemId);
-  CrudOps.updateItemAvailability(req.params.itemId, { ...req.body.data }, (err, oldData) => {
-    if (err) {
-      res.sendStatus(400);
-    } else {
-      res.status(200).send(oldData);
-    }
-  });
+  CrudOps.updateItemAvailability(req.params.itemId, { ...req.body.data })
+    .then((data) => {
+      res.status(200).send(data);
+    })
+    .catch((err) => {
+      res.status(500).send(err)
+    });
 });
 
 //Delete
 app.delete('/availableAt/:itemId/', (req, res) => {
   console.log('DELETE received! ID: ', req.params.itemId);
-  CrudOps.deleteItemAvailability(req.params.itemId, (err, doc) => {
-    if (err) {
-      res.sendStatus(400);
-    } else {
-      res.status(200).send(doc);
-    }
-  })
+  CrudOps.deleteItemAvailability(req.params.itemId)
+    .then((data) => {
+      res.status(200).send(data);
+    })
+    .catch((err) => {
+      res.status(500).send(err)
+    });
 });
 
 

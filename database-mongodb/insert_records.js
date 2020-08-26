@@ -38,7 +38,7 @@ const generateRecords = () => {
       return Store.find({}).select('_id');
     })
     .then((data) => {
-      // console.log('StoreData', data);
+      // console.log('StoreData ', data);
       let itemData = [];
       for (let i = 100; i < 200; i++) {
         let itemAvailability = data.map((value) => {
