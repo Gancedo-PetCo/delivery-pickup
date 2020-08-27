@@ -1,5 +1,6 @@
 const mongoose = require('mongoose');
 const config = require('../config.js');
+require('dotenv').config();
 
 const connect = () => {
   const mongoUri = config.mongoUri;
