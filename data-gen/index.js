@@ -2,16 +2,23 @@ const faker = require('faker');
 const fs = require('fs');
 const PATH = require('path');
 
+const writeItems = fs.createWriteStream(PATH.join(__dirname, '/csv/items.csv'));
 const writeStore = fs.createWriteStream(PATH.join(__dirname, '/csv/stores.csv'));
 const writeItem = fs.createWriteStream(PATH.join(__dirname, '/csv/availability.csv'));
-const minStores = 1;
+const startIdx = 199;
 const maxStores = 5;
 const maxItems = 10000000;
 const encoding = 'utf-8';
 
+writeItems.write('itemId\n', 'utf8');
 writeStore.write('storeId,storeName,storeAddress,storePhone\n', 'utf8');
 writeItem.write('itemId,storeId,inStock\n', 'utf8');
 
+
+
+const itemMaker = (id) => {
+  return [`${id + startIdx}\n`];
+};
 
 //only going to have 5 stores to simulate 1 user searching item availability in a 50mi radius
 //there are only 1500 petco stores in the whole US
@@ -27,11 +34,10 @@ const storeMaker = (id) => {
 
 const availabilityMaker = (id) => {
   let data = [];
-  let storeIdArr = Array(maxStores).fill(0).map((_, idx) => idx + 1);
 
   for (let i = 1; i <= maxStores; i++) {
     let inStock = Math.random() < 0.7;
-    let entry = `${id + 199},${i},${inStock}\n`;
+    let entry = `${id + startIdx},${i},${inStock}\n`;
     data.push(entry);
   }
 
@@ -77,6 +83,10 @@ const dataWriter = (writer, numEntries, dataMaker, encoding, callback) => {
   write();
 };
 
+
+dataWriter(writeItems, maxItems, itemMaker, encoding, () => {
+  writeStore.end();
+});
 dataWriter(writeStore, maxStores, storeMaker, encoding, () => {
   writeStore.end();
 });
