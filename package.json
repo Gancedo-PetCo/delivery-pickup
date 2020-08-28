@@ -8,6 +8,7 @@
     "start": "nodemon server/start.js",
     "client": "webpack -d --watch",
     "seed": "node database-mongodb/seed.js",
+    "generate-data": "node ./data-gen/index.js",
     "build_client": "webpack --mode production"
   },
   "author": "",
