@@ -1,16 +1,26 @@
-// Update with your config settings.
+require('dotenv').config;
+
+const { CLIENT, DATABASE, PG_USER, PASSWORD, HOST, PG_PORT } = process.env;
+
+
 
 module.exports = {
 
   development: {
-    client: 'pg',
-    connection: 'postgres://localhost/itemAvail',
+    client: CLIENT,
+    connection: {
+      database: DATABASE,
+      user: PG_USER,
+      password: PASSWORD,
+      host: HOST,
+      port: PG_PORT,
+    },
     migrations: {
-      directory: __dirname + '/db/migrations'
+      directory: __dirname + '/db/migrations',
     },
     seeds: {
-      directory: __dirname + 'database/database-postgresql'
-    }
+      directory: __dirname + '/db/seeds',
+    },
   },
 
   staging: {
