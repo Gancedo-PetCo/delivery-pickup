@@ -27,13 +27,11 @@ const storeMaker = (id) => {
 
 const availabilityMaker = (id) => {
   let data = [];
-
-
   let storeIdArr = Array(maxStores).fill(0).map((_, idx) => idx + 1);
 
   for (let i = 1; i <= maxStores; i++) {
     let inStock = Math.random() < 0.7;
-    let entry = `${id},${i},${inStock}\n`;
+    let entry = `${id + 199},${i},${inStock}\n`;
     data.push(entry);
   }
 
