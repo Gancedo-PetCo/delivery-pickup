@@ -1,4 +1,6 @@
-require('dotenv').config;
+const PATH = require('path');
+
+require('dotenv').config({ path: __dirname });
 
 const { CLIENT, DATABASE, PG_USER, PASSWORD, HOST, PG_PORT } = process.env;
 
@@ -7,9 +9,9 @@ const { CLIENT, DATABASE, PG_USER, PASSWORD, HOST, PG_PORT } = process.env;
 module.exports = {
 
   development: {
-    client: CLIENT,
+    client: 'pg',
     connection: {
-      database: DATABASE,
+      database: 'deliver_pickup',
       user: PG_USER,
       password: PASSWORD,
       host: HOST,

@@ -4,15 +4,15 @@ const PATH = require('path');
 
 const writeItems = fs.createWriteStream(PATH.join(__dirname, '/csv/items.csv'));
 const writeStore = fs.createWriteStream(PATH.join(__dirname, '/csv/stores.csv'));
-const writeItem = fs.createWriteStream(PATH.join(__dirname, '/csv/availability.csv'));
-const startIdx = 199;
+const writeAvail = fs.createWriteStream(PATH.join(__dirname, '/csv/availability.csv'));
+const startIdx = 100;
 const maxStores = 5;
 const maxItems = 10000000;
 const encoding = 'utf-8';
 
-writeItems.write('itemId\n', 'utf8');
-writeStore.write('storeId,storeName,storeAddress,storePhone\n', 'utf8');
-writeItem.write('itemId,storeId,inStock\n', 'utf8');
+writeItems.write('item_id\n', 'utf8');
+writeStore.write('store_id,store_name,store_address,store_phone_number\n', 'utf8');
+writeAvail.write('item_id,store_id,availability\n', 'utf8');
 
 
 
@@ -27,7 +27,7 @@ const storeMaker = (id) => {
   const storeAddress = faker.address.streetAddress();
   const storePhone = faker.phone.phoneNumberFormat();
 
-  return [`${id},${storeName},${storeAddress},${storePhone}\n`];
+  return [`${id},"${storeName}","${storeAddress}","${storePhone}"\n`];
 };
 
 
@@ -37,7 +37,7 @@ const availabilityMaker = (id) => {
 
   for (let i = 1; i <= maxStores; i++) {
     let inStock = Math.random() < 0.7;
-    let entry = `${id + startIdx},${i},${inStock}\n`;
+    let entry = `${id},${i},${inStock}\n`;
     data.push(entry);
   }
 
@@ -90,6 +90,6 @@ dataWriter(writeItems, maxItems, itemMaker, encoding, () => {
 dataWriter(writeStore, maxStores, storeMaker, encoding, () => {
   writeStore.end();
 });
-dataWriter(writeItem, maxItems, availabilityMaker, encoding, () => {
+dataWriter(writeAvail, maxItems, availabilityMaker, encoding, () => {
   writeStore.end();
 });
