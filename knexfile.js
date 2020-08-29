@@ -1,8 +1,6 @@
-const PATH = require('path');
-
 require('dotenv').config({ path: __dirname });
 
-const { CLIENT, DATABASE, PG_USER, PASSWORD, HOST, PG_PORT } = process.env;
+const { PG_USER, PASSWORD, HOST, PG_PORT } = process.env;
 
 
 

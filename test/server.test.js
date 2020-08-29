@@ -6,7 +6,6 @@ const request = require('supertest');
 const app = require('../server/index.js');
 
 
-
 beforeAll(async () => {
   await mongoose.connect(config.serverUri, {
     useNewUrlParser: true,
@@ -28,8 +27,6 @@ beforeAll(async () => {
 afterAll(async () => {
   await mongoose.connection.close();
 });
-
-
 
 
 describe('BackEnd Test', () => {
@@ -89,8 +86,6 @@ describe('BackEnd Test', () => {
 
   });
 });
-
-
 
 describe('Requests Test', () => {
   test('returns 200 status code if item found', () => {

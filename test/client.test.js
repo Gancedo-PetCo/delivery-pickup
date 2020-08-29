@@ -12,23 +12,25 @@ describe('deliverPickup', () => {
   let price = 9.99;
   let currency = '$';
 
-  it('should display Add to Cart button and Available at: if item is available', () => {
+  it('should display Add to Cart button and Available at: if item is available', (done) => {
     const wrapper = shallow(<DeliverPickup availability={available} price={price} currency={currency} />);
     // console.log(wrapper.html());
     expect(wrapper.find('.deliverPickupButton').at(1).text()).toEqual('Add to Cart');
     expect(wrapper.find('.itemAvailability').text()).toEqual('Available at:');
+    done();
   });
 
-  it('should display Not Available button and Not Available at: if item is not available', () => {
+  it('should display Not Available button and Not Available at: if item is not available', (done) => {
     const wrapper = shallow(<DeliverPickup availability={notAvailable} price={price} currency={currency} />);
     expect(wrapper.find('.deliverPickupButton').at(1).text()).toEqual('Not Available');
     expect(wrapper.find('.itemAvailability').text()).toEqual('Not Available at:');
+    done();
   });
 
-  it('should display item price and currency', () => {
+  it('should display item price and currency', (done) => {
     const wrapper = shallow(<DeliverPickup availability={notAvailable} price={price} currency={currency} />);
     expect(wrapper.find('.deliverPickupItemPrice').at(0).text()).toEqual('$9.99');
     expect(wrapper.find('.deliverPickupItemPrice').at(1).text()).toEqual('$9.99');
-  })
-
-})
+    done();
+  });
+});
