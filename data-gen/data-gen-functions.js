@@ -1,11 +1,13 @@
 const faker = require('faker');
-const startIdx = 100;
+const startingItemId = 100;
+const startingStoreId = 1;
 const maxStores = 5;
 
 
 //returns array of size 1
-const itemMaker = (id) => {
-  return [`${id + startIdx - 1}\n`];
+const itemMaker = (index) => {
+  let itemId = index + startingItemId - 1;
+  return [`${itemId}\n`];
 };
 
 //only going to have 5 stores to simulate 1 user searching item availability in a 50mi radius
@@ -15,26 +17,27 @@ const itemMaker = (id) => {
  * @param {*} id for store
  * returns array of size 1 with the store_id, store_name, store_address, and store_phone
  */
-const storeMaker = (id) => {
+const storeMaker = (index) => {
+  const storeId = index + startingStoreId - 1;
   const storeName = faker.address.city();
   const storeAddress = faker.address.streetAddress();
   const storePhone = faker.phone.phoneNumberFormat();
 
-  return [`${id},"${storeName}","${storeAddress}","${storePhone}"\n`];
+  return [`${storeId},"${storeName}","${storeAddress}","${storePhone}"\n`];
 };
 
 //id starts from 1 for both store and items
 /**
  *
  * @param {*} id for item
- * returns array of size 1 with the item_id, store_id, and availability(bool)
+ * returns array of size 1 with the item_index, store_index, and availability(bool)
  */
-const availabilityMaker = (id) => {
+const availabilityMaker = (item_index) => {
   let data = [];
 
   for (let i = 1; i <= maxStores; i++) {
     let inStock = Math.random() < 0.7;
-    let entry = `${id},${i},${inStock}\n`;
+    let entry = `${item_index},${i},${inStock}\n`;
     data.push(entry);
   }
 

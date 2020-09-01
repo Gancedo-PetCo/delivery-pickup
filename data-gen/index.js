@@ -14,7 +14,7 @@ const writeAvail = fs.createWriteStream(PATH.join(__dirname, '/csv/availability.
 //write csv table heads
 writeItems.write('item_id\n', 'utf8');
 writeStore.write('store_id,store_name,store_address,store_phone_number\n', 'utf8');
-writeAvail.write('item_id,store_id,availability\n', 'utf8');
+writeAvail.write('item_idx,store_idx,availability\n', 'utf8');
 
 //end write streams
 dataWriter(writeItems, maxItems, itemMaker, encoding, () => {

@@ -48,21 +48,21 @@ describe('maker function: ', () => {
 describe('dataWriter should: ', () => {
 
   describe('for items ', () => {
-    let itemCSVpath = PATH.join(csvPath, 'itemTest.csv');
+    let itemCSVpath1 = PATH.join(csvPath, 'itemTest1.csv');
+    let itemCSVpath2 = PATH.join(csvPath, 'itemTest2.csv');
 
-    let writeStream = fs.createWriteStream(itemCSVpath);
-    let readStream = fs.createReadStream(itemCSVpath);
+    let writeStream1 = fs.createWriteStream(itemCSVpath1);
+    let readStream1 = fs.createReadStream(itemCSVpath1);
+    writeStream1.write('item_id\n', 'utf8');
 
-    beforeEach(() => {
-      writeStream = fs.createWriteStream(itemCSVpath);
-      readStream = fs.createReadStream(itemCSVpath);
-      writeStream.write('item_id\n', 'utf8');
-    });
+    let writeStream2 = fs.createWriteStream(itemCSVpath2);
+    let readStream2 = fs.createReadStream(itemCSVpath2);
+    writeStream2.write('item_id\n', 'utf8');
 
     test('write an single entry to a csv file', (done) => {
-      dataWriter(writeStream, 1, itemMaker, encoding, () => {
-        writeStream.end();
-        readStream
+      dataWriter(writeStream1, 1, itemMaker, encoding, () => {
+        writeStream1.end();
+        readStream1
           .on('error', (err) => {
             console.error(err);
           })
@@ -71,17 +71,17 @@ describe('dataWriter should: ', () => {
             expect(row.item_id).toEqual('100');
           })
           .on('end', () => {
-            readStream.destroy();
+            readStream1.destroy();
             done();
           });
       });
     });
 
     test('write 20 entries to a csv file', (done) => {
-      dataWriter(writeStream, 20, itemMaker, encoding, () => {
+      dataWriter(writeStream2, 20, itemMaker, encoding, () => {
         let itemId = 100;
-        writeStream.end();
-        readStream
+        writeStream2.end();
+        readStream2
           .on('error', (err) => {
             console.error(err);
           })
@@ -91,7 +91,7 @@ describe('dataWriter should: ', () => {
             itemId += 1;
           })
           .on('end', () => {
-            readStream.destroy();
+            readStream2.destroy();
             done();
           });
       });
@@ -99,21 +99,27 @@ describe('dataWriter should: ', () => {
   });
 
   describe('for stores ', () => {
-    let storeCSVpath = PATH.join(csvPath, 'storeTest.csv');
+    let storeCSVpath1 = PATH.join(csvPath, 'storeTest1.csv');
+    let storeCSVpath2 = PATH.join(csvPath, 'storeTest2.csv');
 
-    let writeStream = fs.createWriteStream(storeCSVpath);
-    let readStream = fs.createReadStream(storeCSVpath);
+    let writeStream1 = fs.createWriteStream(storeCSVpath1);
+    let readStream1 = fs.createReadStream(storeCSVpath1);
+    writeStream1.write('store_id,store_name,store_address,store_phone_number\n', 'utf8');
 
-    beforeEach(() => {
-      writeStream = fs.createWriteStream(storeCSVpath);
-      readStream = fs.createReadStream(storeCSVpath);
-      writeStream.write('store_id,store_name,store_address,store_phone_number\n', 'utf8');
-    });
+    let writeStream2 = fs.createWriteStream(storeCSVpath2);
+    let readStream2 = fs.createReadStream(storeCSVpath2);
+    writeStream2.write('store_id,store_name,store_address,store_phone_number\n', 'utf8');
+
+    // beforeEach(() => {
+    //   writeStream = fs.createWriteStream(storeCSVpath);
+    //   readStream = fs.createReadStream(storeCSVpath);
+    //   writeStream.write('store_id,store_name,store_address,store_phone_number\n', 'utf8');
+    // });
 
     test('write an single entry to a csv file', (done) => {
-      dataWriter(writeStream, 1, storeMaker, encoding, () => {
-        writeStream.end();
-        readStream
+      dataWriter(writeStream1, 1, storeMaker, encoding, () => {
+        writeStream1.end();
+        readStream1
           .on('error', (err) => {
             console.error(err);
           })
@@ -129,17 +135,17 @@ describe('dataWriter should: ', () => {
             );
           })
           .on('end', () => {
-            readStream.destroy();
+            readStream1.destroy();
             done();
           });
       });
     });
 
     test('write 5 entries to a csv file', (done) => {
-      dataWriter(writeStream, 5, storeMaker, encoding, () => {
+      dataWriter(writeStream2, 5, storeMaker, encoding, () => {
         let storeId = 1;
-        writeStream.end();
-        readStream
+        writeStream2.end();
+        readStream2
           .on('error', (err) => {
             console.error(err);
           })
@@ -156,7 +162,7 @@ describe('dataWriter should: ', () => {
             storeId += 1;
           })
           .on('end', () => {
-            readStream.destroy();
+            readStream2.destroy();
             done();
           });
       });
@@ -164,22 +170,28 @@ describe('dataWriter should: ', () => {
   });
 
   describe('for availability ', () => {
-    let availabilityCSVpath = PATH.join(csvPath, 'availabilityTest.csv');
+    let availabilityCSVpath1 = PATH.join(csvPath, 'availabilityTest1.csv');
+    let availabilityCSVpath2 = PATH.join(csvPath, 'availabilityTest2.csv');
 
-    let writeStream = fs.createWriteStream(availabilityCSVpath);
-    let readStream = fs.createReadStream(availabilityCSVpath);
+    let writeStream1 = fs.createWriteStream(availabilityCSVpath1);
+    let readStream1 = fs.createReadStream(availabilityCSVpath1);
+    writeStream1.write('item_idx,store_idx,availability\n', 'utf8');
 
-    beforeEach(() => {
-      writeStream = fs.createWriteStream(availabilityCSVpath);
-      readStream = fs.createReadStream(availabilityCSVpath);
-      writeStream.write('item_id,store_id,availability\n', 'utf8');
-    });
+    let writeStream2 = fs.createWriteStream(availabilityCSVpath2);
+    let readStream2 = fs.createReadStream(availabilityCSVpath2);
+    writeStream2.write('item_idx,store_idx,availability\n', 'utf8');
+
+    // beforeEach(() => {
+    //   writeStream = fs.createWriteStream(availabilityCSVpath);
+    //   readStream = fs.createReadStream(availabilityCSVpath);
+    //   writeStream.write('item_id,store_id,availability\n', 'utf8');
+    // });
 
     test('write an single entry to a csv file', (done) => {
-      dataWriter(writeStream, 1, availabilityMaker, encoding, () => {
+      dataWriter(writeStream1, 1, availabilityMaker, encoding, () => {
         let storeId = 1;
-        writeStream.end();
-        readStream
+        writeStream1.end();
+        readStream1
           .on('error', (err) => {
             console.error(err);
           })
@@ -195,18 +207,18 @@ describe('dataWriter should: ', () => {
             storeId = storeId === 5 ? 1 : storeId + 1;
           })
           .on('end', () => {
-            readStream.destroy();
+            readStream2.destroy();
             done();
           });
       });
     });
 
     test('write 5 entries to a csv file', (done) => {
-      dataWriter(writeStream, 20, availabilityMaker, encoding, () => {
+      dataWriter(writeStream2, 20, availabilityMaker, encoding, () => {
         let storeId = 1;
         let itemId = 1;
-        writeStream.end();
-        readStream
+        writeStream2.end();
+        readStream2
           .on('error', (err) => {
             console.error(err);
           })
@@ -223,7 +235,7 @@ describe('dataWriter should: ', () => {
             storeId = storeId === 5 ? 1 : storeId + 1;
           })
           .on('end', () => {
-            readStream.destroy();
+            readStream2.destroy();
             done();
           });
       });

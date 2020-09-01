@@ -1,4 +1,9 @@
 node_modules
 bundle.js
-*.csv
+availabilityTest*
+itemTest*
+storeTest*
+availability.csv
+items.csv
+stores.csv
 .env
