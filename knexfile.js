@@ -1,4 +1,5 @@
-require('dotenv').config({ path: __dirname });
+const PATH = require('path');
+require('dotenv').config({ path: PATH.join(__dirname, '.env') });
 
 const { PG_USER, PASSWORD, HOST, PG_PORT } = process.env;
 
@@ -16,10 +17,10 @@ module.exports = {
       port: PG_PORT,
     },
     migrations: {
-      directory: __dirname + '/db/migrations',
+      directory: __dirname + '/database-pg/migrations',
     },
     seeds: {
-      directory: __dirname + '/db/seeds',
+      directory: __dirname + '/database-pg/seeds',
     },
   },
 
