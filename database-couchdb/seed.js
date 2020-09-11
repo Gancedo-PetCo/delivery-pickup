@@ -9,13 +9,13 @@ const url = `http://${COUCH_USER}:${COUCH_PWD}@${COUCH_URL}/`;
 const db = 'dev';
 
 const seed = () => {
-  // console.log(COUCH_URL);
-  //first delete the db
 
+  //first delete the db
   removeOldData(url, db)
     .then(() => {
       Axios.put(url + db)
         .then(() => {
+          //then seed db
           createNewData(url, db);
         })
         .catch((err) => {
@@ -25,19 +25,6 @@ const seed = () => {
     .catch((err) => {
       console.error('err ', err);
     })
-
-
-
-  // Axios.put(url + '/"0001"', {
-  //   person: 'Joe'
-  // })
-  //   .then((data) => {
-  //     console.log('succ! ', data);
-  //   })
-  //   .catch((err) => {
-  //     console.error(err);
-  //   })
 };
-
 
 seed();
