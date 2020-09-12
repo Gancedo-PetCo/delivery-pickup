@@ -8,7 +8,10 @@ const { COUCH_URL, COUCH_PWD, COUCH_USER, COUCH_DB } = process.env;
 const url = `http://${COUCH_USER}:${COUCH_PWD}@${COUCH_URL}/${COUCH_DB}`;
 const startId = 100;
 
+//revision ID helper function needed for couchDB update and delete operations
+//Aka a very specific get request only used to extract the revision id
 const getRevId = (itemId) => {
+
   return axios.post(url + '/_find',
     {
       'selector': {
@@ -29,6 +32,7 @@ const getRevId = (itemId) => {
 }
 
 exports.getData = (itemId) => {
+
   return axios.post(url + '/_find',
     {
       'selector': {
@@ -51,6 +55,7 @@ exports.getData = (itemId) => {
 exports.updateData = async (itemId, info) => {
 
   info._rev = await getRevId(itemId);
+
   return axios.put(url + `/${itemId}`, info)
     .then((data) => {
       return data.data;
@@ -74,6 +79,9 @@ exports.deleteData = async (itemId) => {
 };
 
 exports.addData = async (data) => {
+
+  //couchDB does not support auto increment indexes so I have to get the size of the DB and
+  //manually assign the new index
   let id = await axios.get(url)
     .then((data) => {
       return data.data.doc_count;
@@ -81,6 +89,7 @@ exports.addData = async (data) => {
     .catch((err) => {
       console.error(err);
     });
+
   return axios.put(url + `/${id + startId}`, data)
     .then((res) => {
       return res.data
