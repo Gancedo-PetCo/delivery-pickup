@@ -23,11 +23,10 @@ app.get('/availableAt/:itemId', (req, res) => {
 
   getData(itemId)
     .then((data) => {
-      console.log('data: ', data);
       if (Object.keys(data).length === 0) {
         res.sendStatus(404);
       } else {
-        res.status(200).send(data.data.docs[0]);
+        res.status(200).send(data);
       }
     })
     .catch((err) => {
@@ -37,35 +36,33 @@ app.get('/availableAt/:itemId', (req, res) => {
 });
 
 app.post('/availableAt', (req, res) => {
-  let itemId = req.params.itemId;
-  console.log('POST received! Data: ', req.body.data);
+  let data = req.body.data;
+  console.log('POST received! Data: ', data);
 
-  addData(itemId)
+  addData(data)
     .then((data) => {
-      console.log('data: ', data);
-      if (Object.keys(data).length === 0) {
-        res.sendStatus(404);
+      if (data.ok) {
+        res.status(200).send(data);
       } else {
-        res.status(200).send(data.data.docs[0]);
+        res.sendStatus(500);
       }
     })
     .catch((err) => {
       res.status(500).send(err);
     });
-
 });
 
 app.put('/availableAt/:itemId', (req, res) => {
   let itemId = req.params.itemId;
+  let data = req.body.data;
   console.log('Put received! ID: ', itemId);
 
-  updateData(itemId)
+  updateData(itemId, data)
     .then((data) => {
-      console.log('data: ', data);
-      if (Object.keys(data).length === 0) {
-        res.sendStatus(404);
+      if (data.ok) {
+        res.status(200).send(data);
       } else {
-        res.status(200).send(data.data.docs[0]);
+        res.sendStatus(500);
       }
     })
     .catch((err) => {
@@ -81,10 +78,10 @@ app.delete('/availableAt/:itemId', (req, res) => {
   deleteData(itemId)
     .then((data) => {
       console.log('data: ', data);
-      if (Object.keys(data).length === 0) {
-        res.sendStatus(404);
+      if (data.ok) {
+        res.status(200).send(data);
       } else {
-        res.status(200).send(data.data.docs[0]);
+        res.sendStatus(500);
       }
     })
     .catch((err) => {
@@ -92,70 +89,5 @@ app.delete('/availableAt/:itemId', (req, res) => {
     });
 
 });
-
-// //Create
-// app.post('/availableAt', (req, res) => {
-//   console.log('POST received!');
-//   CrudOps.createItemAvailability(req.body.data)
-//     .then((data) => {
-//       res.status(200).send(data);
-//     })
-//     .catch((err) => {
-
-//       res.sendStatus(400);
-//     });
-//   //   , (err, data) => {
-//   //   if (err) {
-//   //     res.sendStatus(400);
-//   //   } else {
-//   //     res.status(200).send(data);
-//   //   }
-//   // }
-//   // );
-// });
-
-// //Read
-// app.get('/availableAt/:itemId/', (req, res) => {
-//   console.log('GET received! ID: ', req.params.itemId);
-//   CrudOps.readItemAvailability(req.params.itemId)
-//     .then((data) => {
-//       // console.log('data: ', data);
-//       if (Object.keys(data).length === 0) {
-//         res.sendStatus(404);
-//       } else {
-//         res.status(200).send(data);
-//       }
-//     })
-//     .catch((err) => {
-//       res.status(500).send(err);
-//     });
-// });
-
-// //Update
-// app.put('/availableAt/:itemId/', (req, res) => {
-//   console.log('PUT received! ID: ', req.params.itemId);
-//   CrudOps.updateItemAvailability(req.params.itemId, { ...req.body.data })
-//     .then((data) => {
-//       res.status(200).send(data);
-//     })
-//     .catch((err) => {
-//       res.status(500).send(err)
-//     });
-// });
-
-// //Delete
-// app.delete('/availableAt/:itemId/', (req, res) => {
-//   console.log('DELETE received! ID: ', req.params.itemId);
-//   CrudOps.deleteItemAvailability(req.params.itemId)
-//     .then((data) => {
-//       res.status(200).send(data);
-//     })
-//     .catch((err) => {
-//       res.status(500).send(err)
-//     });
-// });
-
-
-
 
 module.exports = app;
