@@ -1,7 +1,7 @@
 const morgan = require('morgan');
 const app = require('./index.js');
 // const connect = require('../database-mongodb/connect.js');
-const PORT = 3006;
+const PORT = 3000;
 app.use(morgan('dev'));
 
 

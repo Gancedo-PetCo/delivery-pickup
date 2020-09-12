@@ -1,103 +1,36 @@
-const fs = require('fs');
+
+const axios = require('axios');
 const PATH = require('path');
-const csvParser = require('csv-parser');
-const Axios = require('axios');
+require('dotenv').config({ path: PATH.join(__dirname, '..', '.env') });
 
-const availabilityPath = PATH.resolve(__dirname, '..', 'data-gen', 'csv', 'availability.csv');
-const storesPath = PATH.resolve(__dirname, '..', 'data-gen', 'csv', 'stores.csv');
 
-const startingItemId = 100;
-const batchSize = 100;
+const { COUCH_URL, COUCH_PWD, COUCH_USER, COUCH_DB } = process.env;
+const url = `http://${COUCH_USER}:${COUCH_PWD}@${COUCH_URL}/${COUCH_DB}`;
+const startId = 100;
 
-const removeOldData = (url, db) => {
-
-  return Axios.delete(url + db)
-    .catch((err) => {
-      return err;
-    });
+exports.getData = (itemId) => {
+  return axios.post(url + '/_find',
+    {
+      'selector': {
+        _id: {
+          '$eq': itemId
+        }
+      },
+      'fields': ['itemId', 'itemAvailability'],
+      'limit': 1,
+    }
+  );
 };
 
-const createNewData = (url, db) => {
-  let curId = startingItemId;
-  let availabilityStream = fs.createReadStream(availabilityPath);
-
-  const writeData = async (curIds, stores) => {
-    let count = 0;
-    let docs = [];
-    let entry = {};
-    let curId = curIds
-    availabilityStream
-      .on('error', (err) => {
-        console.error(err);
-      })
-      .pipe(csvParser())
-      .on('data', (data) => {
-
-        count++;
-        if (entry.itemId === undefined) {
-          entry.itemId = entry._id = curId.toString();
-          entry.itemAvailability = stores;
-        }
-
-        entry.itemAvailability[parseInt(data.store_id) - 1].availability = data.availability;
-        if (count === 5) {
-          docs.push(entry);
-          entry = {};
-          curId++;
-          count = 0;
-        }
-        if (docs.length === batchSize) {
-
-          console.log(curId);
-          availabilityStream.pause();
-
-          Axios.post(url + db + '/_bulk_docs', { docs })
-            .then(() => {
-              console.log('posted!');
-              setTimeout(() => {
-                console.log('Now data will start flowing again. ' + curId);
-
-                availabilityStream.resume();
-              }, 500);
-            })
-            .catch((err) => {
-              console.error(err);
-            });
-          docs = [];
-        }
-      })
-      .on('end', () => {
-        console.log('seed done!');
-        availabilityStream.destroy();
-      });
-  }
-  getStoreData((stores) => {
-    writeData(curId, stores);
-  });
-
-}
-
-const getStoreData = (CB) => {
-  let storesStream = fs.createReadStream(storesPath);
-  let stores = [];
-  storesStream
-    .on('error', (err) => {
-      console.error(err);
-    })
-    .pipe(csvParser())
-    .on('data', (data) => {
-      let store = data;
-      store.storeId = data.store_id;
-      store.availability = false;
-      // console.log(store);
-      stores.push(store);
-    })
-    .on('end', () => {
-      storesStream.destroy();
-      CB(stores);
-    });
-
+exports.updateData = (itemId, info) => {
+  return axios.put(url + `/${itemId}`, info);
 };
 
-exports.removeOldData = removeOldData;
-exports.createNewData = createNewData;
+exports.deleteData = (itemId) => {
+  return axios.delete(url + `/${itemId}`);
+};
+
+exports.addData = async (data) => {
+  let id = await axios.get(url);
+  return axios.put(url + `/${id + startId}`, data);
+};
