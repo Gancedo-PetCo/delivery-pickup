@@ -72,4 +72,64 @@ describe('Requests Test', () => {
         expect(response.status).toBe(500);
       });
   });
+  test('returns 200 status if item successfully posted', async () => {
+    let data = {
+      itemId: '10000100',
+      itemAvailability: [
+        {
+          "store_id": "x",
+          "store_name": "xx",
+          "store_address": "xxx",
+          "store_phone_number": "xxxx",
+          "storeId": "x",
+          "availability": "true"
+        }
+      ]
+    };
+    await request(app)
+      .post('/availableAt')
+      .send(data)
+      .set('Accept', 'application/json')
+      .expect('Content-Type', /json/)
+      .expect(200);
+    return request(app)
+      .get('/availableAt/10000100')
+      .set('Accept', 'application/json')
+      .expect('Content-Type', /json/)
+      .expect(200)
+      .then(res => {
+        expect(res.body.itemId).toBe('10000100');
+        expect(res.body.itemAvailability.length).toBe(1);
+      });
+  });
+  test('returns 200 status if item successfully updated', async () => {
+    let data = {
+      itemId: '10000100',
+      itemAvailability: []
+    };
+
+    await request(app)
+      .put('/availableAt/10000100')
+      .send(data)
+      .set('Accept', 'application/json')
+      .expect('Content-Type', /json/)
+      .expect(200);
+    return request(app)
+      .get('/availableAt/10000100')
+      .set('Accept', 'application/json')
+      .expect('Content-Type', /json/)
+      .expect(200)
+      .then(res => {
+        expect(res.body.itemId).toBe('10000100');
+        expect(res.body.itemAvailability.length).toBe(0);
+      });
+  });
+
+
+
+  test('returns 200 status if item successfully deleted', () => {
+    return request(app)
+      .delete('/availableAt/10000100')
+      .expect(200);
+  });
 });

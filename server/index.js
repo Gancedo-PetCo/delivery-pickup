@@ -36,7 +36,7 @@ app.get('/availableAt/:itemId', (req, res) => {
 });
 
 app.post('/availableAt', (req, res) => {
-  let data = req.body.data;
+  let data = req.body;
   console.log('POST received! Data: ', data);
 
   addData(data)
@@ -54,7 +54,7 @@ app.post('/availableAt', (req, res) => {
 
 app.put('/availableAt/:itemId', (req, res) => {
   let itemId = req.params.itemId;
-  let data = req.body.data;
+  let data = req.body;
   console.log('Put received! ID: ', itemId);
 
   updateData(itemId, data)
