@@ -3,7 +3,7 @@ const Axios = require('axios');
 
 require('dotenv').config({ path: PATH.join(__dirname, '..', '.env') });
 
-const { removeOldData, createNewData } = require('./index.js');
+const { removeOldData, createNewData } = require('./datagen.js');
 const { COUCH_URL, COUCH_PWD, COUCH_USER } = process.env;
 const url = `http://${COUCH_USER}:${COUCH_PWD}@${COUCH_URL}/`;
 const db = 'dev';

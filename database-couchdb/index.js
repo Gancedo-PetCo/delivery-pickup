@@ -1,103 +1,100 @@
-const fs = require('fs');
+
+const axios = require('axios');
 const PATH = require('path');
-const csvParser = require('csv-parser');
-const Axios = require('axios');
+require('dotenv').config({ path: PATH.join(__dirname, '..', '.env') });
 
-const availabilityPath = PATH.resolve(__dirname, '..', 'data-gen', 'csv', 'availability.csv');
-const storesPath = PATH.resolve(__dirname, '..', 'data-gen', 'csv', 'stores.csv');
 
-const startingItemId = 100;
-const batchSize = 100;
+const { COUCH_URL, COUCH_PWD, COUCH_USER, COUCH_DB } = process.env;
+const url = `http://${COUCH_USER}:${COUCH_PWD}@${COUCH_URL}/${COUCH_DB}`;
+const startId = 100;
 
-const removeOldData = (url, db) => {
+//revision ID helper function needed for couchDB update and delete operations
+//Aka a very specific get request only used to extract the revision id
+const getRevId = (itemId) => {
 
-  return Axios.delete(url + db)
+  return axios.post(url + '/_find',
+    {
+      'selector': {
+        _id: {
+          '$eq': itemId
+        }
+      },
+      'fields': ['_rev'],
+      'limit': 1,
+    }
+  )
+    .then((data) => {
+      return data.data.docs[0]._rev;
+    })
     .catch((err) => {
-      return err;
+      console.error(err);
     });
-};
-
-const createNewData = (url, db) => {
-  let curId = startingItemId;
-  let availabilityStream = fs.createReadStream(availabilityPath);
-
-  const writeData = async (curIds, stores) => {
-    let count = 0;
-    let docs = [];
-    let entry = {};
-    let curId = curIds
-    availabilityStream
-      .on('error', (err) => {
-        console.error(err);
-      })
-      .pipe(csvParser())
-      .on('data', (data) => {
-
-        count++;
-        if (entry.itemId === undefined) {
-          entry.itemId = entry._id = curId.toString();
-          entry.itemAvailability = stores;
-        }
-
-        entry.itemAvailability[parseInt(data.store_id) - 1].availability = data.availability;
-        if (count === 5) {
-          docs.push(entry);
-          entry = {};
-          curId++;
-          count = 0;
-        }
-        if (docs.length === batchSize) {
-
-          console.log(curId);
-          availabilityStream.pause();
-
-          Axios.post(url + db + '/_bulk_docs', { docs })
-            .then(() => {
-              console.log('posted!');
-              setTimeout(() => {
-                console.log('Now data will start flowing again. ' + curId);
-
-                availabilityStream.resume();
-              }, 500);
-            })
-            .catch((err) => {
-              console.error(err);
-            });
-          docs = [];
-        }
-      })
-      .on('end', () => {
-        console.log('seed done!');
-        availabilityStream.destroy();
-      });
-  }
-  getStoreData((stores) => {
-    writeData(curId, stores);
-  });
-
 }
 
-const getStoreData = (CB) => {
-  let storesStream = fs.createReadStream(storesPath);
-  let stores = [];
-  storesStream
-    .on('error', (err) => {
-      console.error(err);
-    })
-    .pipe(csvParser())
-    .on('data', (data) => {
-      let store = data;
-      store.storeId = data.store_id;
-      store.availability = false;
-      // console.log(store);
-      stores.push(store);
-    })
-    .on('end', () => {
-      storesStream.destroy();
-      CB(stores);
-    });
+exports.getData = (itemId) => {
 
+  return axios.post(url + '/_find',
+    {
+      'selector': {
+        _id: {
+          '$eq': itemId
+        }
+      },
+      'fields': ['itemId', 'itemAvailability'],
+      'limit': 1,
+    }
+  )
+    .then((data) => {
+      return data.data.docs[0];
+    })
+    .catch((err) => {
+      console.error(err);
+    });
 };
 
-exports.removeOldData = removeOldData;
-exports.createNewData = createNewData;
+exports.updateData = async (itemId, info) => {
+
+  info._rev = await getRevId(itemId);
+
+  return axios.put(url + `/${itemId}`, info)
+    .then((data) => {
+      return data.data;
+    })
+    .catch((err) => {
+      console.error(err);
+    });
+};
+
+exports.deleteData = async (itemId) => {
+
+  let rev = await getRevId(itemId);
+
+  return axios.delete(url + `/${itemId}?rev=${rev}`)
+    .then((data) => {
+      return data.data;
+    })
+    .catch((err) => {
+      console.error(err);
+    });
+};
+
+exports.addData = async (data) => {
+
+  //couchDB does not support auto increment indexes so I have to get the size of the DB and
+  //manually assign the new index
+  let id = await axios.get(url)
+    .then((data) => {
+      return data.data.doc_count;
+    })
+    .catch((err) => {
+      console.error(err);
+    });
+
+  return axios.put(url + `/${id + startId}`, data)
+    .then((res) => {
+      return res.data
+    })
+    .catch((err) => {
+      console.error(err);
+    });
+};

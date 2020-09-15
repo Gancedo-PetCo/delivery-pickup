@@ -1,6 +1,6 @@
 const express = require('express');
 // const { CrudOps } = require('../database-mongodb/itemAvailability.js');
-const { getData } = require('../database-pg/index.js');
+const { getData, deleteData, updateData, addData } = require('../database-couchdb/index.js');
 const cors = require('cors');
 const app = express();
 
@@ -17,11 +17,12 @@ app.get('*.js', (req, res, next) => {
 
 app.use(express.static(__dirname + '/../react-client/dist'));
 
-app.get('/availableAt/:itemId/', (req, res) => {
-  console.log('GET received! ID: ', req.params.itemId);
-  getData(req.params.itemId)
+app.get('/availableAt/:itemId', (req, res) => {
+  let itemId = req.params.itemId;
+  console.log('GET received! ID: ', itemId);
+
+  getData(itemId)
     .then((data) => {
-      // console.log('data: ', data);
       if (Object.keys(data).length === 0) {
         res.sendStatus(404);
       } else {
@@ -31,72 +32,62 @@ app.get('/availableAt/:itemId/', (req, res) => {
     .catch((err) => {
       res.status(500).send(err);
     });
+
 });
 
+app.post('/availableAt', (req, res) => {
+  let data = req.body;
+  console.log('POST received! Data: ', data);
 
-// //Create
-// app.post('/availableAt', (req, res) => {
-//   console.log('POST received!');
-//   CrudOps.createItemAvailability(req.body.data)
-//     .then((data) => {
-//       res.status(200).send(data);
-//     })
-//     .catch((err) => {
+  addData(data)
+    .then((data) => {
+      if (data.ok) {
+        res.status(200).send(data);
+      } else {
+        res.sendStatus(500);
+      }
+    })
+    .catch((err) => {
+      res.status(500).send(err);
+    });
+});
 
-//       res.sendStatus(400);
-//     });
-//   //   , (err, data) => {
-//   //   if (err) {
-//   //     res.sendStatus(400);
-//   //   } else {
-//   //     res.status(200).send(data);
-//   //   }
-//   // }
-//   // );
-// });
+app.put('/availableAt/:itemId', (req, res) => {
+  let itemId = req.params.itemId;
+  let data = req.body;
+  console.log('Put received! ID: ', itemId);
 
-// //Read
-// app.get('/availableAt/:itemId/', (req, res) => {
-//   console.log('GET received! ID: ', req.params.itemId);
-//   CrudOps.readItemAvailability(req.params.itemId)
-//     .then((data) => {
-//       // console.log('data: ', data);
-//       if (Object.keys(data).length === 0) {
-//         res.sendStatus(404);
-//       } else {
-//         res.status(200).send(data);
-//       }
-//     })
-//     .catch((err) => {
-//       res.status(500).send(err);
-//     });
-// });
+  updateData(itemId, data)
+    .then((data) => {
+      if (data.ok) {
+        res.status(200).send(data);
+      } else {
+        res.sendStatus(500);
+      }
+    })
+    .catch((err) => {
+      res.status(500).send(err);
+    });
 
-// //Update
-// app.put('/availableAt/:itemId/', (req, res) => {
-//   console.log('PUT received! ID: ', req.params.itemId);
-//   CrudOps.updateItemAvailability(req.params.itemId, { ...req.body.data })
-//     .then((data) => {
-//       res.status(200).send(data);
-//     })
-//     .catch((err) => {
-//       res.status(500).send(err)
-//     });
-// });
+});
 
-// //Delete
-// app.delete('/availableAt/:itemId/', (req, res) => {
-//   console.log('DELETE received! ID: ', req.params.itemId);
-//   CrudOps.deleteItemAvailability(req.params.itemId)
-//     .then((data) => {
-//       res.status(200).send(data);
-//     })
-//     .catch((err) => {
-//       res.status(500).send(err)
-//     });
-// });
+app.delete('/availableAt/:itemId', (req, res) => {
+  let itemId = req.params.itemId;
+  console.log('DELETE received! ID: ', itemId);
 
+  deleteData(itemId)
+    .then((data) => {
+      console.log('data: ', data);
+      if (data.ok) {
+        res.status(200).send(data);
+      } else {
+        res.sendStatus(500);
+      }
+    })
+    .catch((err) => {
+      res.status(500).send(err);
+    });
 
-
+});
 
 module.exports = app;

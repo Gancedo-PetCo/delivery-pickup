@@ -23,6 +23,22 @@ module.exports = {
       directory: __dirname + '/database-pg/seeds',
     },
   },
+  test: {
+    client: 'pg',
+    connection: {
+      database: 'test',
+      user: PG_USER,
+      password: PASSWORD,
+      host: HOST,
+      port: PG_PORT,
+    },
+    migrations: {
+      directory: __dirname + '/database-pg/migrations',
+    },
+    seeds: {
+      directory: __dirname + '/database-pg/seeds',
+    },
+  },
 
   staging: {
     client: 'postgresql',
