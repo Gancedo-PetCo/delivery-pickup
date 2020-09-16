@@ -35,6 +35,7 @@ app.get('/availableAt/:itemId', (req, res) => {
 
 });
 
+
 app.post('/availableAt', (req, res) => {
   let data = req.body;
   console.log('POST received! Data: ', data);
