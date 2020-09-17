@@ -7,3 +7,4 @@ availability.csv
 items.csv
 stores.csv
 .env
+newrelic_agent.log
