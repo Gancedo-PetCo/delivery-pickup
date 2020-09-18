@@ -22,17 +22,23 @@ class App extends React.Component {
     this.getData(this.props.itemId === '' ? undefined : this.props.itemId);
   }
 
-  getData(itemId = 100) {
-    Axios.get(`/availableAt/${itemId}`)
-      .then(({ data }) => {
-        console.log(data);
-        this.setState({
-          itemAvailability: data.itemAvailability
-        });
-      })
-      .catch((err) => {
-        console.error(err);
+  getData(itemId = 99) {
+    if (itemId === 99) {
+      this.setState({
+        itemAvailability: []
       });
+    } else {
+      Axios.get(`/availableAt/${itemId}`)
+        .then(({ data }) => {
+          console.log(data);
+          this.setState({
+            itemAvailability: data.itemAvailability
+          });
+        })
+        .catch((err) => {
+          console.error(err);
+        });
+    }
   }
 
   render() {

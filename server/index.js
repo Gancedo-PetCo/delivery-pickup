@@ -1,7 +1,7 @@
 const express = require('express');
 const PATH = require('path');
 require('dotenv').config({ path: PATH.join(__dirname, '..', '.env') });
-require('newrelic');
+// require('newrelic');
 const { getData, deleteData, updateData, addData } = require('../database-couchdb/index.js');
 const cors = require('cors');
 const app = express();
@@ -19,8 +19,7 @@ app.use(express.urlencoded({ extended: true }));
 
 app.use(express.static(__dirname + '/../react-client/dist'));
 
-app.get('/app/:itemId', (req, res) => {
-
+app.get('/app', (req, res) => {
   res.sendFile(PATH.resolve(__dirname, '../react-client/dist/index.html'));
 });
 
