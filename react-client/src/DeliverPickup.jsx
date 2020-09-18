@@ -19,12 +19,12 @@ const DeliverPickup = (props) => (
         <strong>10% off – See Price in Cart!</strong> Curbside pickup now available in most locations.
       </div>
       <div className="deliverPickupItemPrice">{props.currency}{props.price}</div>
-      <div className={`itemAvailability ${props.availability.availability ? 'itemAvailabilityGreen' : 'itemAvailabilityRed'}`}>{props.availability.availability ? "Available at:": "Not Available at:"}</div>
+      <div className={`itemAvailability ${props.availability.availability ? 'itemAvailabilityGreen' : 'itemAvailabilityRed'}`}>{props.availability.availability ? "Available at:" : "Not Available at:"}</div>
       <div className="localStoreAvailability">
-        <span className="pickupStoreName">{props.availability.storeName.toUpperCase()}</span>
+        <span className="pickupStoreName">{props.availability.store_name.toUpperCase()}</span>
         <a className="changeStore">Change Store</a>
       </div>
-      <button disabled={!props.availability.availability} className="deliverPickupButton">{props.availability.availability ? "Add to Cart": "Not Available"}</button>
+      <button disabled={!props.availability.availability} className="deliverPickupButton">{props.availability.availability ? "Add to Cart" : "Not Available"}</button>
     </div>
   </div>
 )

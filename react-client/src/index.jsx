@@ -1,60 +1,61 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import $ from 'jquery';
+import Axios from 'axios';
 import DeliverPickup from './DeliverPickup.jsx'
-import config from '../../config.js'
+import PropTypes from 'prop-types';
+
 
 class App extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      itemAvailability: null,
-      itemPrice: null,
-      itemCurrency: null
+      itemId: 100,
+      itemAvailability: [],
+      itemPrice: 5,
+      itemCurrency: 'usd'
+    };
+    this.getData = this.getData.bind(this);
+  }
+
+  componentDidMount() {
+    // console.log(this.props.itemId);
+    this.getData(this.props.itemId === '' ? undefined : this.props.itemId);
+  }
+
+  getData(itemId = 99) {
+    if (itemId === 99) {
+      this.setState({
+        itemAvailability: []
+      });
+    } else {
+      Axios.get(`/availableAt/${itemId}`)
+        .then(({ data }) => {
+          console.log(data);
+          this.setState({
+            itemAvailability: data.itemAvailability
+          });
+        })
+        .catch((err) => {
+          console.error(err);
+        });
     }
   }
 
-  componentDidMount () {
-    console.log('Item id', this.props.itemId)
-    $.ajax ({
-      url: config.itemPrice + this.props.itemId,
-      type: "get",
-      success: (data) => {
-        console.log('Data returned from the title amd price service', data);
-        this.setState({
-          itemPrice: data.price,
-          itemCurrency: data.currency
-        })
-      },
-      error: (error) => {
-        console.log(error);
-      }
-    })
-    $.ajax ({
-      url: config.availableAt + this.props.itemId,
-      type: "get",
-      success: (data) => {
-        console.log('Data returned from the server', data.itemAvailability[0].storeName);
-        this.setState({
-          itemAvailability: data.itemAvailability
-        })
-      },
-      error: (error) => {
-        console.log(error);
-      }
-    })
-  }
-
   render() {
-    let defaultStore = this.state.itemAvailability ? this.state.itemAvailability[0]: null;
+    let defaultStore = this.state.itemAvailability ? this.state.itemAvailability[0] : null;
     return (
       (defaultStore && this.state.itemPrice)
-        ? <DeliverPickup availability={defaultStore} price={this.state.itemPrice} currency={this.state.itemCurrency}/>
-        : null
+        ? <DeliverPickup availability={defaultStore} price={this.state.itemPrice} currency={this.state.itemCurrency} />
+        : <div>aa</div>
     );
   }
 }
 
-const urlParams = new URLSearchParams(window.location.search);
-const itemId = urlParams.get('itemID');
-ReactDOM.render(<App itemId={itemId}/>, document.getElementById('itemAvailability'));
+App.propTypes = {
+  itemId: PropTypes.number
+};
+
+
+const urlParams = window.location.pathname.split('/');
+const urlid = urlParams[2];
+ReactDOM.render(<App itemId={urlid} />, document.getElementById('itemAvailability'));
