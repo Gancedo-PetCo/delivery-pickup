@@ -10,7 +10,11 @@ class App extends React.Component {
     super(props);
     this.state = {
       itemId: 100,
-      itemAvailability: [],
+      itemAvailability: [
+        {
+          store_name: 'blah'
+        }
+      ],
       itemPrice: 5,
       itemCurrency: 'usd'
     };
@@ -18,19 +22,16 @@ class App extends React.Component {
   }
 
   componentDidMount() {
-    // console.log(this.props.itemId);
-    this.getData(this.props.itemId === '' ? undefined : this.props.itemId);
+    this.getData(this.props.itemId);
   }
 
-  getData(itemId = 99) {
-    if (itemId === 99) {
+  getData(itemId) {
+    if (itemId != 99) {
       this.setState({
-        itemAvailability: []
+        itemId
       });
-    } else {
       Axios.get(`/availableAt/${itemId}`)
         .then(({ data }) => {
-          console.log(data);
           this.setState({
             itemAvailability: data.itemAvailability
           });
@@ -56,6 +57,7 @@ App.propTypes = {
 };
 
 
-const urlParams = window.location.pathname.split('/');
-const urlid = urlParams[2];
-ReactDOM.render(<App itemId={urlid} />, document.getElementById('itemAvailability'));
+let urlParams = window.location.pathname.split('/');
+ReactDOM.render(
+  <App itemId={urlParams[2] ? urlParams[2] : 99} />,
+  document.getElementById('itemAvailability'));
