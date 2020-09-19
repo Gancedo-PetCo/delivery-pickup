@@ -10,16 +10,16 @@ app.use(cors());
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
-// app.get('*.js', (req, res, next) => {
-//   req.url = req.url + '.gz';
-//   res.set('Content-Type', 'application/javascript');
-//   res.set('Content-Encoding', 'gzip');
-//   next();
-// });
+app.get('*.js', (req, res, next) => {
+  req.url = req.url + '.gz';
+  res.set('Content-Type', 'application/javascript');
+  res.set('Content-Encoding', 'gzip');
+  next();
+});
 
 app.use(express.static(__dirname + '/../react-client/dist'));
 
-app.get('/app', (req, res) => {
+app.get('/app/:id', (req, res) => {
   res.sendFile(PATH.resolve(__dirname, '../react-client/dist/index.html'));
 });
 

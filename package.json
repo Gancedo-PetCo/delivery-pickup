@@ -5,14 +5,15 @@
   "main": "index.js",
   "scripts": {
     "test": "jest --runInBand",
-    "start": "nodemon server/start.js",
+    "server": "node server/start.js",
     "build": "webpack -d --watch",
     "seed": "node database-mongodb/seed.js",
     "seed-couch": "node database-couchdb/seed.js",
     "seed-pg": "npx knex seed:run",
     "generate-data": "node ./data-gen/index.js",
     "build-prod": "webpack --mode production",
-    "k6-html": "k6 run ./stress-test/k6-http-get.js"
+    "k6-html": "k6 run --summary-export=export-html.json ./stress-test/k6-http-get.js",
+    "k6-get": "k6 run --summary-export=export-get.json ./stress-test/k6-get.js"
   },
   "author": "",
   "license": "ISC",

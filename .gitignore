@@ -8,3 +8,5 @@ items.csv
 stores.csv
 .env
 newrelic_agent.log
+export-get.json
+export-html.json

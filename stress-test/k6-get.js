@@ -15,8 +15,11 @@ export let options = {
 
 export default function () {
 
-  const url = ['GET', 'http://localhost:3000/app/99', null, { tags: { name: 'wat' } }];
-  let batchCalls = Array(10).fill(url);
+
+  let batchCalls = Array(10).fill(0).map(() => {
+    let id = Math.floor(Math.random() * 1000000 + 9000000);
+    return ['GET', `http://localhost:3000/availableAt/${id}`, null, { tags: { name: 'wat' } }];
+  });
   let batch = http.batch(batchCalls);
 
   batch.forEach((res) => {
