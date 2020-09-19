@@ -1,4 +1,5 @@
-import React from 'react';
+const React = require('react');
+const PropTypes = require('prop-types');
 
 const DeliverPickup = (props) => (
   <div className="deliveryPickupContainers">
@@ -27,6 +28,11 @@ const DeliverPickup = (props) => (
       <button disabled={!props.availability.availability} className="deliverPickupButton">{props.availability.availability ? "Add to Cart" : "Not Available"}</button>
     </div>
   </div>
-)
+);
 
-export default DeliverPickup;
+DeliverPickup.propTypes = {
+  currency: PropTypes.string,
+  price: PropTypes.string,
+  availability: PropTypes.object,
+};
+module.exports = DeliverPickup;
