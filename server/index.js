@@ -8,7 +8,7 @@ const { getData, deleteData, updateData, addData } = require('../database-couchd
 
 require('@babel/register');
 require('dotenv').config({ path: PATH.join(__dirname, '..', '.env') });
-// require('newrelic');
+require('newrelic');
 
 const cors = require('cors');
 const app = express();
