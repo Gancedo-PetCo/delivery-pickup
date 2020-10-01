@@ -1,5 +1,5 @@
 const PATH = require('path');
-const Axios = require('axios');
+const axios = require('axios');
 
 require('dotenv').config({ path: PATH.join(__dirname, '..', '.env') });
 
@@ -13,7 +13,7 @@ const seed = () => {
   //first delete the db
   removeOldData(url, db)
     .then(() => {
-      Axios.put(url + db)
+      axios.put(url + db)
         .then(() => {
           //then seed db
           createNewData(url, db);

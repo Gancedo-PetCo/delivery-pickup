@@ -1,7 +1,7 @@
 const fs = require('fs');
 const PATH = require('path');
 const csvParser = require('csv-parser');
-const Axios = require('axios');
+const axios = require('axios');
 
 const availabilityPath = PATH.resolve(__dirname, '..', 'data-gen', 'csv', 'availability.csv');
 const storesPath = PATH.resolve(__dirname, '..', 'data-gen', 'csv', 'stores.csv');
@@ -11,7 +11,7 @@ const batchSize = 100;
 
 const removeOldData = (url, db) => {
 
-  return Axios.delete(url + db)
+  return axios.delete(url + db)
     .catch((err) => {
       return err;
     });
@@ -51,7 +51,7 @@ const createNewData = (url, db) => {
           console.log(curId);
           availabilityStream.pause();
 
-          Axios.post(url + db + '/_bulk_docs', { docs })
+          axios.post(url + db + '/_bulk_docs', { docs })
             .then(() => {
               console.log('posted!');
               setTimeout(() => {

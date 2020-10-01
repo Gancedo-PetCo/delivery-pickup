@@ -1,14 +1,23 @@
+const React = require('react');
 const express = require('express');
+const ReactDOMServer = require('react-dom/server');
+
+// const fs = require('fs');
 const PATH = require('path');
-require('dotenv').config({ path: PATH.join(__dirname, '..', '.env') });
-// require('newrelic');
 const { getData, deleteData, updateData, addData } = require('../database-couchdb/index.js');
+
+require('@babel/register');
+require('dotenv').config({ path: PATH.join(__dirname, '..', '.env') });
+require('newrelic');
+
 const cors = require('cors');
 const app = express();
 
 app.use(cors());
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
+
+const App = require('../react-client/src/app.jsx');
 
 app.get('*.js', (req, res, next) => {
   req.url = req.url + '.gz';
@@ -17,10 +26,36 @@ app.get('*.js', (req, res, next) => {
   next();
 });
 
-app.use(express.static(__dirname + '/../react-client/dist'));
 
+
+const constructHTMLFromTemplate = function (body) {
+  return `
+  <!DOCTYPE html>
+  <html>
+
+  <head>
+    <title>deliverPickupService</title>
+    <script crossorigin src="https://unpkg.com/react@16/umd/react.production.min.js"></script>
+    <script crossorigin src="https://unpkg.com/react-dom@16/umd/react-dom.production.min.js"></script>
+    <script crossorigin src="https://cdnjs.cloudflare.com/ajax/libs/axios/0.20.0/axios.min.js"></script>
+    <link rel="stylesheet" href="/style.css">
+    </link>
+  </head>
+
+  <body>
+    <div id="itemAvailability"></div>
+      ${body}
+  </body>
+  <script src="/bundle.js"></script>
+  </html>
+  `;
+};
+
+app.use(express.static(__dirname + '/../react-client/templates'));
 app.get('/app/:id', (req, res) => {
-  res.sendFile(PATH.resolve(__dirname, '../react-client/dist/index.html'));
+  const body = ReactDOMServer.renderToString(React.createElement(App, {}, null));
+  const SSR = constructHTMLFromTemplate(body);
+  res.status(200).send(SSR);
 });
 
 app.get('/availableAt/:itemId', (req, res) => {
