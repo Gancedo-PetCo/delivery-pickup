@@ -9,34 +9,13 @@ class App extends React.Component {
     super(props);
     const data = this.props.data;
     this.state = {
-      itemId: 99,
-      itemAvailability: [],
+      itemId: data.itemId,
+      itemAvailability: data.itemAvailability,
       itemPrice: 5,
       itemCurrency: 'usd'
     };
-    // this.getData = this.getData.bind(this);
   }
 
-  // componentDidMount() {
-  //   this.getData(this.props.itemId);
-  // }
-
-  // getData(itemId) {
-  //   if (itemId != 99) {
-  //     this.setState({
-  //       itemId
-  //     });
-  //     axios.get(`/availableAt/${itemId}`)
-  //       .then(({ data }) => {
-  //         this.setState({
-  //           itemAvailability: data.itemAvailability
-  //         });
-  //       })
-  //       .catch((err) => {
-  //         console.error(err);
-  //       });
-  //   }
-  // }
 
   render() {
     let defaultStore = this.state.itemAvailability ? this.state.itemAvailability[0] : null;

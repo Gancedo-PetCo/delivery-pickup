@@ -2,7 +2,7 @@ import http from 'k6/http';
 import { sleep, check } from 'k6';
 import { Counter } from 'k6/metrics';
 
-var errorCounter = new Counter("error_count");
+var errorCounter = new Counter('error_count');
 
 export let options = {
   stages: [
@@ -16,7 +16,7 @@ export let options = {
 
 export default function () {
 
-  const url = ['GET', 'http://localhost:3000/app/99', null, { tags: { name: 'wat' } }];
+  const url = ['GET', 'http://localhost:3006/app/99', null, { tags: { name: 'wat' } }];
   let batchCalls = Array(10).fill(url);
   let batch = http.batch(batchCalls);
 

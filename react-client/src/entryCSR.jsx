@@ -6,7 +6,7 @@ const App = require('./app.jsx');
 
 
 let urlParams = window.location.pathname.split('/');
-
+console.log(urlParams);
 if (urlParams[2]) {
   axios.get(`/availableAt/${urlParams[2]}`)
     .then(({ data }) => {
