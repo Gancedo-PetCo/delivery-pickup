@@ -60,7 +60,7 @@ const createNewData = (url, db) => {
                 console.log('Now data will start flowing again. ' + curId);
 
                 availabilityStream.resume();
-              }, 500);
+              }, 1000);
             })
             .catch((err) => {
               console.error(err);
