@@ -6,6 +6,7 @@ require('dotenv').config({ path: PATH.join(__dirname, '..', '.env') });
 
 const { COUCH_URL, COUCH_PWD, COUCH_USER, COUCH_DB } = process.env;
 const url = `http://${COUCH_USER}:${COUCH_PWD}@${COUCH_URL}/${COUCH_DB}`;
+console.log(url);
 const startId = 100;
 
 //revision ID helper function needed for couchDB update and delete operations
