@@ -25,7 +25,8 @@ const createNewData = (url, db) => {
     let count = 0;
     let docs = [];
     let entry = {};
-    let curId = curIds
+    let curId = curIds;
+
     availabilityStream
       .on('error', (err) => {
         console.error(err);
@@ -38,8 +39,9 @@ const createNewData = (url, db) => {
           entry.itemId = entry._id = curId.toString();
           entry.itemAvailability = stores;
         }
+        // console.log(entry);
 
-        entry.itemAvailability[parseInt(data.store_id) - 1].availability = data.availability;
+        entry.itemAvailability[parseInt(data.store_idx) - 1].availability = data.availability;
         if (count === 5) {
           docs.push(entry);
           entry = {};
@@ -48,7 +50,7 @@ const createNewData = (url, db) => {
         }
         if (docs.length === batchSize) {
 
-          console.log(curId);
+          // console.log(curId);
           availabilityStream.pause();
 
           axios.post(url + db + '/_bulk_docs', { docs })
