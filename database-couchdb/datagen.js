@@ -61,6 +61,7 @@ const createNewData = (url, db) => {
 
                 availabilityStream.resume();
               }, 1000);
+
             })
             .catch((err) => {
               console.error(err);
