@@ -82,7 +82,7 @@ app.get('/availableAt/:itemId', (req, res) => {
 
 });
 
-app.get(`/${LOADER_TOKEN}`, (req, res) => {
+app.get(`/${LOADER_TOKEN}.txt`, (req, res) => {
   res.sendFile(PATH.resolve(__dirname, '../loader.txt'));
 })
 
