@@ -19,6 +19,11 @@ app.use(express.urlencoded({ extended: true }));
 
 const App = require('../react-client/src/app.jsx');
 
+const dummyData = {
+  itemId: 99,
+  itemAvailability: [{ store_name: 'blah', availability: false }]
+};
+
 app.get('*.js', (req, res, next) => {
   req.url = req.url + '.gz';
   res.set('Content-Type', 'application/javascript');
@@ -53,7 +58,8 @@ const constructHTMLFromTemplate = function (body) {
 
 app.use(express.static(__dirname + '/../react-client/templates'));
 app.get('/app/:id', (req, res) => {
-  const body = ReactDOMServer.renderToString(React.createElement(App, {}, null));
+
+  const body = ReactDOMServer.renderToString(React.createElement(App, { data: dummyData }, null));
   const SSR = constructHTMLFromTemplate(body);
   res.status(200).send(SSR);
 });

@@ -8,6 +8,7 @@ module.exports = {
     'react-client/dist/bundle.js': `${SRC_DIR}/entryCSR.jsx`,
     'react-client/templates/bundle.js': `${SRC_DIR}/entrySSR.jsx`
   },
+  mode: 'production',
   output: {
     filename: '[name]',
     path: __dirname

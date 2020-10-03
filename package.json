@@ -5,8 +5,8 @@
   "main": "index.js",
   "scripts": {
     "test": "jest --runInBand",
-    "server": "nodemon server/start.js",
-    "build": "webpack -d --watch",
+    "server": "node server/start.js",
+    "build": "webpack",
     "seed": "node database-mongodb/seed.js",
     "seed-couch": "node database-couchdb/seed.js",
     "generate-data": "node ./data-gen/index.js",
