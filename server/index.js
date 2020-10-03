@@ -1,23 +1,22 @@
 const React = require('react');
 const express = require('express');
 const ReactDOMServer = require('react-dom/server');
-
-// const fs = require('fs');
+const cors = require('cors');
 const PATH = require('path');
 const { getData, deleteData, updateData, addData } = require('../database-couchdb/index.js');
+
 
 require('@babel/register');
 require('dotenv').config({ path: PATH.join(__dirname, '..', '.env') });
 require('newrelic');
-
-const cors = require('cors');
+const App = require('../react-client/src/app.jsx');
 const app = express();
 
 app.use(cors());
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
-const App = require('../react-client/src/app.jsx');
+const { LOADER_TOKEN } = process.env;
 
 const dummyData = {
   itemId: 99,
@@ -83,6 +82,9 @@ app.get('/availableAt/:itemId', (req, res) => {
 
 });
 
+app.get(`/${LOADER_TOKEN}`, (req, res) => {
+  res.sendFile(PATH.resolve(__dirname, '../loader.txt'));
+})
 
 app.post('/availableAt', (req, res) => {
   let data = req.body;
