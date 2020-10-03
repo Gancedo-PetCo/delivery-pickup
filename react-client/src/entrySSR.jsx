@@ -9,7 +9,7 @@ let dummyData = {
 
 let itemId = window.location.pathname.split('/')[2];
 if (itemId) {
-  axios.get(`http://localhost:3006/availableAt/${itemId}`)
+  axios.get(`http://52.9.1.123:3006/availableAt/${itemId}`)
     .then(({ data }) => {
       ReactDOM.hydrate(
         <App data={data} />,
