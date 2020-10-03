@@ -10,7 +10,7 @@ require('@babel/register');
 require('dotenv').config({ path: PATH.join(__dirname, '..', '.env') });
 require('newrelic');
 
-const { REDIS_PORT } = process.env;
+const { REDIS_PORT, LOADER_TOKEN } = process.env;
 const app = express();
 const redis_client = redis.createClient(REDIS_PORT);
 
@@ -112,6 +112,10 @@ app.get('/availableAt/:itemId', checkCache, async (req, res) => {
   //     res.status(500).send(err);
   //   });
 });
+
+app.get(`/${LOADER_TOKEN}.txt`, (req, res) => {
+  res.sendFile(PATH.resolve(__dirname, '../loader.txt'));
+})
 
 
 app.post('/availableAt', (req, res) => {
