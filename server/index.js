@@ -66,7 +66,7 @@ const checkCache = (req, res, next) => {
       res.status(500).send(err);
     }
     if (data != null) {
-      // console.log('redis found it!');
+       console.log('redis found it!');
       res.send(data);
     } else {
       next();
