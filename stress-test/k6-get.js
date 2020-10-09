@@ -3,6 +3,8 @@ import { sleep, check } from 'k6';
 import { Counter } from 'k6/metrics';
 
 var errorCounter = new Counter("error_count");
+// const url = 'http://52.9.1.123:3006';
+const url = 'http://localhost:3006';
 
 export let options = {
   stages: [
@@ -19,7 +21,7 @@ export default function () {
 
   let batchCalls = Array(10).fill(0).map(() => {
     let id = Math.floor(Math.random() * 1000000 + 9000000);
-    return ['GET', `http://52.9.1.123:3006/availableAt/${id}`, null, { tags: { name: 'wat' } }];
+    return ['GET', `${url}/availableAt/${id}`, null, { tags: { name: 'wat' } }];
   });
   let batch = http.batch(batchCalls);
 

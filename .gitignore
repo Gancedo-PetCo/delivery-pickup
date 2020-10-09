@@ -1,5 +1,5 @@
 node_modules
-bundle.js
+bundle*
 availabilityTest*
 itemTest*
 storeTest*
@@ -10,3 +10,4 @@ stores.csv
 newrelic_agent.log
 export-get.json
 export-html.json
+loader.txt

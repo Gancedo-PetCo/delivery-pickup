@@ -3,6 +3,8 @@ import { sleep, check } from 'k6';
 import { Counter } from 'k6/metrics';
 
 var errorCounter = new Counter('error_count');
+// const url = 'http://52.9.1.123:3006';
+const url = 'http://localhost:3006';
 
 export let options = {
   stages: [
@@ -16,8 +18,8 @@ export let options = {
 
 export default function () {
 
-  const url = ['GET', 'http://localhost:3006/app/99', null, { tags: { name: 'wat' } }];
-  let batchCalls = Array(10).fill(url);
+  const urlParam = ['GET', `${url}/app/99`, null, { tags: { name: 'wat' } }];
+  let batchCalls = Array(10).fill(urlParam);
   let batch = http.batch(batchCalls);
 
   batch.forEach((res) => {
