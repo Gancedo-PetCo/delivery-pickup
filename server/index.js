@@ -66,7 +66,7 @@ const checkCache = (req, res, next) => {
       res.status(500).send(err);
     }
     if (data != null) {
-       console.log('redis found it!');
+      console.log('redis found it!');
       res.send(data);
     } else {
       next();
@@ -75,6 +75,8 @@ const checkCache = (req, res, next) => {
 }
 
 app.use(express.static(__dirname + '/../react-client/templates'));
+app.use(express.static(__dirname + '/../react-client/src'));
+
 app.get('/app/:id', (req, res) => {
 
   const body = ReactDOMServer.renderToString(React.createElement(App, { data: dummyData }, null));
@@ -98,19 +100,6 @@ app.get('/availableAt/:itemId', checkCache, async (req, res) => {
     console.error('aaa ', err);
     return res.status(500).json(err);
   }
-
-  // getData(itemId)
-  //   .then((data) => {
-  //     if (Object.keys(data).length === 0) {
-  //       res.sendStatus(404);
-  //     } else {
-  //       // console.log(data)
-  //       res.status(200).send(data);
-  //     }
-  //   })
-  //   .catch((err) => {
-  //     res.status(500).send(err);
-  //   });
 });
 
 app.get(`/${LOADER_TOKEN}.txt`, (req, res) => {
@@ -172,5 +161,6 @@ app.delete('/availableAt/:itemId', (req, res) => {
     });
 
 });
+
 
 module.exports = app;
