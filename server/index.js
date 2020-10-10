@@ -93,7 +93,7 @@ app.get('/availableAt/:itemId', checkCache, async (req, res) => {
     if (Object.keys(data).length === 0) {
       res.sendStatus(404);
     } else {
-      redis_client.setex(itemId, 3600, JSON.stringify(data));
+      redis_client.setex(itemId, 7200, JSON.stringify(data));
       return res.status(200).send(data);
     }
   } catch (err) {
@@ -161,6 +161,5 @@ app.delete('/availableAt/:itemId', (req, res) => {
     });
 
 });
-
 
 module.exports = app;
